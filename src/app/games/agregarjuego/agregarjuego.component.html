@@ -1,0 +1,45 @@
+
+<div class="container">
+    <p>AGREGAR EQUIPO</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">titulo de Equipo</label>
+                    <input [(ngModel)]="videojuego.titulo" type="text" class="form-control" name="nombre">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">categoria</label>
+                    <input [(ngModel)]="videojuego.categoria" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">clasificacion</label>
+                    <input [(ngModel)]="videojuego.clasificacion" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">educatividad</label>
+                    <input [(ngModel)]="videojuego.educatividad" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">descripcion</label>
+                    <input [(ngModel)]="videojuego.descripcion" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">puntuacion</label>
+                    <input [(ngModel)]="videojuego.puntuacion" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">portadaURL</label>
+                    <input [(ngModel)]="videojuego.portadaURL" type="text" class="form-control" name="nombre">
+                </div>
+                
+                <button (click)="agregar()" class="btn btn-primary">Agregar</button>
+            </form>
+        </div>
+
+
+ 
+    </div>
+    
+</div>

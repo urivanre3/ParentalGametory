@@ -1,42 +1,8 @@
-<div *ngIf="!isAdmin && showNavbar else admin">
-  <app-navbar></app-navbar>
-</div>
 
-<ng-template #admin>
-  <app-sidebar *ngIf="showSidebar"></app-sidebar>
-</ng-template>
+<a routerLink="list">User List</a> |
 
-<main [ngClass]="{'main-wrapper': isAdmin && showSidebar, 'mt-30': !isAdmin}">
-  <app-header *ngIf="isAdmin && showSidebar"></app-header>
-  <div class="container-fluid" [ngClass]="{'container': !isAdmin}"> <!-- [ngClass]="{'container': !isAdmin}" -->
-      <app-pagetitle [title]="title" [path]="url" *ngIf="isAdmin"></app-pagetitle>
-      <router-outlet (activate)="onActivated($event)"></router-outlet>
-  </div>
-</main>
+<a routerLink="add">Add User</a>
 
-<!--<footer class="footer">
-  <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-6 order-last order-md-first">
-          <div class="copyright text-center text-md-start">
-            <p class="text-sm">
-              Designed and Developed by
-              <a href="https://plainadmin.com" rel="nofollow" target="_blank">
-                PlainAdmin
-              </a>
-            </p>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="
-              terms
-              d-flex
-              justify-content-center justify-content-md-end
-            ">
-            <a href="#0" class="text-sm">Term &amp; Conditions</a>
-            <a href="#0" class="text-sm ml-15">Privacy &amp; Policy</a>
-          </div>
-        </div>
-      </div>
-    </div>
-</footer>-->
+
+
+<router-outlet></router-outlet>
