@@ -1,8 +1,17 @@
+<div *ngIf="!isAdmin && showNavbar else admin">
+    <app-navbar></app-navbar>
+</div>
 
-<a routerLink="list">User List</a> |
+<ng-template #admin>
+    <app-sidebar *ngIf="showSidebar"></app-sidebar>
+</ng-template>
 
-<a routerLink="add">Add User</a>
+<main [ngClass]="{'main-wrapper': isAdmin && showSidebar, 'mt-30': !isAdmin}">
+    <app-header *ngIf="isAdmin && showSidebar"></app-header>
+    <div class="container-fluid" [ngClass]="{'container': !isAdmin}"> 
+        <app-pagetitle [title]="title" [path]="url" *ngIf="isAdmin"></app-pagetitle>
+        <router-outlet (activate)="onActivated($event)"></router-outlet>
+    </div>
 
+</main>
 
-
-<router-outlet></router-outlet>

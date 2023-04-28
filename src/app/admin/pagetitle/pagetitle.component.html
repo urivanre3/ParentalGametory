@@ -1,0 +1,25 @@
+<div class="title-wrapper pt-30">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <div class="title mb-30">
+                <h2>{{title}}</h2>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="breadcrumb-wrapper mb-30">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" *ngFor="let path of pathArray; let i = index"
+                            [ngClass]="{'active': pathArray.length - 1 === i}"
+                            [attr.aria-current]="pathArray.length - 1 === i ? 'page': null">
+                            <a [routerLink]="['/admin']" *ngIf="pathArray.length - 1 !== i; else plain">{{path | titlecase}}</a>
+                            <ng-template #plain>
+                                {{path | titlecase}}
+                            </ng-template>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

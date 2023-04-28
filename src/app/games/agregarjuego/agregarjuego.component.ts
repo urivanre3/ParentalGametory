@@ -30,7 +30,7 @@ export class AgregarjuegoComponent implements OnInit {
   agregar(){
     
 
-    this.ApiService.addVideojuego(this.videojuego).subscribe();
+    this.ApiService.addVideogame(this.videojuego).subscribe();
     this.router.navigate(['/inicio']);
   }
   
