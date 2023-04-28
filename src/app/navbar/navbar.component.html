@@ -1,1 +1,190 @@
-<p>navbar works!</p>
+<nav class="navbar navbar-expand-lg navbar-light gradient">
+    <div class="container-fluid ">
+        <a class="navbar-brand" [routerLink]="'/home'">
+            <img src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/logo.png?alt=media&token=46c212fa-4792-443a-b0c2-2ecc4bc2adc2"
+                alt="" width="30" height="24" class="d-inline-block align-text-top">
+            Super-duper
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation ">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-3 order-lg-2" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" (click)="openModal()" role="button">Sign in</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/signup']">Sign up</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Departments
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" [routerLink]="['/fruits']">Fruits</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/vegetables']">Vegetables</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/dairy']">Dairy</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex container-fluid justify-content-start">
+                <a class="ms-auto" [routerLink]="['/mycart'] ">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/cart.png?alt=media&token=ed6f89e4-4e6c-4575-b45b-e2e03357ad46"
+                        alt="" width="35" height="35" class="d-inline-block">
+                </a>
+                <div class="header p-0" style="background-color: transparent;" *ngIf="loggedIn">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <div class="header-right">
+                                    <div class="profile-box ml-15">
+                                        <button class="dropdown-toggle bg-transparent border-0" type="button"
+                                            id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="profile-info">
+                                                <div class="info">
+                                                    <h6>{{(user | async)?.displayName}}</h6>
+                                                    <div class="image">
+                                                        <img [src]="(user | async)?.photoURL" alt="">
+                                                        <span class="status"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <i class="bi bi-chevron-down"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end mt-0" aria-labelledby="profile">
+                                            <li>
+                                                <a [routerLink]="'/orders'">
+                                                    <i class="bi bi-list"></i> Orders
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a (click)="logout()" role="button"><i class="bi bi-box-arrow-left"></i>
+                                                    Sign Out</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Boton flotante-->
+<div class="fab-container ">
+    <div class="fab shadow ">
+        <div class="fab-content">
+            <img src="https://i.ibb.co/frB59Nj/help.png" alt="" width="60">
+        </div>
+    </div>
+    <div class="sub-button shadow">
+        <a href="#" [routerLink]="['/faq']">
+            <img src="https://i.ibb.co/zSbvP2p/faq.png" alt="" width="45">
+        </a>
+    </div>
+    <div class="sub-button shadow ">
+        <a href="#" [routerLink]="['/contact']">
+            <img src="https://i.ibb.co/6HtfRgJ/contact.png" alt="" width="40">
+        </a>
+    </div>
+
+    <div class="sub-button shadow ">
+        <a href="#" [routerLink]="['/question']">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdIVj-nbM4REcyJpkKD7FYMGRi5CpjhEN-ZQ&usqp=CAU"
+                alt="" width="40">
+        </a>
+    </div>
+</div>
+
+<!-- Boton flotante admin-->
+<div class="fab-container2 ">
+    <div class="fab2 shadow ">
+        <div class="fab-content2">
+            <img src="https://i.ibb.co/DfC6My5/admin.png" alt="" width="60">
+            <!--  <span class="material-icons">support_agent</span> -->
+        </div>
+    </div>
+    <div class="sub-button2 shadow ">
+        <a href="#" [routerLink]="['/admin/reports']">
+            <img src="https://i.ibb.co/Ytszyxb/output-onlinepngtools-4.png" alt="" width="40">
+            <!--   <span class="material-icons ">mail_outline</span> -->
+        </a>
+    </div>
+    <div class="sub-button2 shadow ">
+        <a href="#" [routerLink]="['/admin']">
+            <img src="https://i.ibb.co/d6ytLZr/update.png" alt="" width="40">
+            <!--   <span class="material-icons ">mail_outline</span> -->
+        </a>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="signInModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content card-style">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signInModalTitle">Sign In</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="login()" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-style-1">
+                                <label>Email</label>
+                                <input type="email" placeholder="email..." formControlName="email"
+                                    [ngClass]="{'is-invalid':!form.get('email')?.valid}">
+                                <div *ngIf="form.controls['email'].errors?.['required']" class="invalid-feedback">
+                                    * Field required
+                                </div>
+                                <div *ngIf="form.controls['email'].errors?.['email']" class="invalid-feedback">
+                                    * Invalid email
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-style-1">
+                                <label>Password</label>
+                                <input type="password" placeholder="password..." formControlName="password"
+                                    [ngClass]="{'is-invalid':!form.get('password')?.valid}">
+                                <div *ngIf="form.controls['password'].errors?.['required']" class="invalid-feedback">
+                                    * Field required
+                                </div>
+                                <div *ngIf="form.controls['password'].errors?.['minlength']" class="invalid-feedback">
+                                    * At least 8 characters
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="button-group d-flex justify-content-center flex-wrap">
+                            <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center"
+                                [disabled]="form.invalid">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="singin-option pt-40">
+                    <p class="text-sm text-medium text-dark text-center">
+                        Don’t have any account yet?
+                        <a [routerLink]="'/signup'">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<swal #wrongData title="Sign in failed" text="Wrong email or password. Try again" icon="error"></swal>
