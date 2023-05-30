@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: 'about', component: AboutComponent}, */
   {path: 'search', component: SearchComponent},
 /*   {path: 'contact', component: ContactComponent}, */
-  {path: 'signup', component: SignupComponent},
+  
 /*   {path: 'faq', component: FaqComponent},
   {path: 'question', component: QuestionComponent}, */
 
@@ -51,7 +51,7 @@ const routes: Routes = [
 /* {path: 'admin/users', component: UsersComponent}, */
 /* {path: 'admin/reports', component: ReportsComponent}, */
    {path: 'admin/signin', component: SigninComponent,canActivate:[RoleGuard], data: { expectedRole: 'true' } },
-   {path: 'admin/signin', component: SigninComponent},
+
 
    {path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

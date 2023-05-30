@@ -1,1 +1,69 @@
-<p>signin works!</p>
+<div class="row g-0 auth-row">
+    <div class="col-lg-6">
+        <div class="auth-cover-wrapper bg-primary-100">
+            <div class="auth-cover">
+                <div class="title text-center">
+                    <h1 class="text-primary mb-10">Welcome Back</h1>
+                    <p class="text-medium">
+                        Sign in to your existing account to continue
+                    </p>
+                </div>
+                <div class="cover-image">
+                    <img height="500"
+                        src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/logo.png?alt=media&token=46c212fa-4792-443a-b0c2-2ecc4bc2adc2"
+                        alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="signin-wrapper">
+            <div class="form-wrapper">
+                <h6 class="mb-15">Sign in</h6>
+                <p class="text-sm mb-25">
+                    Start creating the best possible user experience for you
+                    customers.
+                </p>
+                <form [formGroup]="form" (ngSubmit)="login()" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-style-1">
+                                <label>Email</label>
+                                <input type="email" placeholder="email..." formControlName="email"
+                                    [ngClass]="{'is-invalid':!form.get('email')?.valid}">
+                                <div *ngIf="form.controls['email'].errors?.['required']" class="invalid-feedback">
+                                    * Field required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-style-1">
+                                <label>Password</label>
+                                <input type="password" placeholder="password..." formControlName="password"
+                                    [ngClass]="{'is-invalid':!form.get('password')?.valid}">
+                                <div *ngIf="form.controls['password'].errors?.['required']" class="invalid-feedback">
+                                    * Field required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="button-group d-flex justify-content-center flex-wrap">
+                                <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center" [disabled]="form.invalid">
+                                    Sign In
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--<div class="singin-option pt-40">
+                    <p class="text-sm text-medium text-dark text-center">
+                        Don’t have any account yet?
+                        <a [routerLink]="'/admin/users'">Create an account</a>
+                    </p>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<swal #wrongData title="Sign in failed" text="Wrong email or password. Try again" icon="error"></swal>
