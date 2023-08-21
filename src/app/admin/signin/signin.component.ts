@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
-import { Auth, authState, User, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { traceUntilFirst } from '@angular/fire/performance';
+/* import { Auth, authState, User, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { traceUntilFirst } from '@angular/fire/performance'; */
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -22,13 +22,13 @@ export class SigninComponent implements OnInit {
 
   // Attributes
   private readonly userDisposable: Subscription | undefined;
-  public readonly user: Observable<User | null> = EMPTY;
+/*   public readonly user: Observable<User | null> = EMPTY; */
 
   // Form
   form: FormGroup;
 
-  constructor(@Optional() private auth: Auth, private router: Router) {
-    if (auth) {
+  constructor(@Optional() /* private auth: Auth, */ private router: Router) {
+    /* if (auth) {
       this.user = authState(this.auth);
 
       this.userDisposable = authState(this.auth).pipe(
@@ -37,7 +37,7 @@ export class SigninComponent implements OnInit {
       ).subscribe(isLoggedIn => {
         if (isLoggedIn) router.navigate(['/admin']);
       });
-    }
+    } */
 
     // Form
     this.form = new FormGroup({
@@ -55,12 +55,12 @@ export class SigninComponent implements OnInit {
   }
 
   async login() {
-    await signInWithEmailAndPassword(this.auth, this.form.value['email'], this.form.value['password'])
+    /* await signInWithEmailAndPassword(this.auth, this.form.value['email'], this.form.value['password'])
       .then((user) => {
         //this.router.navigate(['/admin']);
       })
       .catch(async (error) => {
         await this.wrongData.fire();        
-      });
-  }
+      });*/
+  } 
 }
