@@ -15,15 +15,19 @@ export class CardComponent implements OnInit {
   @Input() items: any[] = [];
 
   seeProduct(item: any) {
-    console.log('method seeProduct');
-    let productId;
-    productId = item.idvideojuego;
-    console.log('productId == ' + productId);
-    this.router.navigate(['/product', productId]);
+    console.log('metodo ver juego');
+    let JuegoID;
+    JuegoID = item.JuegoID;
+    console.log('JuegoID == ' + JuegoID);
+    this.router.navigate(['/videojuego', JuegoID]);
+  }
+
+  onImageError(event: any) {
+    event.target.src = '/assets/ImagenError.png'; // Reemplaza con la ruta de tu imagen de error
   }
 
   showCard(item: any) {
-    console.log('method showcard of card component');
+    console.log('Metodo mostrar card component');
     console.log(item);
     return item;
   }

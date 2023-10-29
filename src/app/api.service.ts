@@ -37,20 +37,23 @@ iniciar_sesion(data:any){
 getToken(): string | null {
   return localStorage.getItem('token');
 }
+  
+//obtener los videojuegos por el nombre
+get_juegos_por_nombre(search: string):Observable<any> {
+  return this._http.get(`${this.apiUrl}/${search}`);
+}
+
+//obtener un videojuego por id
+getjuego_por_id(id:string):Observable<any> {
+  return this._http.get(`${this.apiUrl}/juego/${id}`);
+}
+
+
 
 
 
   /////Videogame/////
 
-  //obtener un videojuego por id
-  getaVideogame(id:string):Observable<any> {
-    return this._http.get(`${this.apiUrl}/Videogame/${id}`);
-  }
-  
-  //obtener los videojuegos por el nombre
-  getVideogames_by_name(search: string):Observable<any> {
-    return this._http.get(`${this.apiUrl}/${search}`);
-  }
 
 
   //agregar videojuego

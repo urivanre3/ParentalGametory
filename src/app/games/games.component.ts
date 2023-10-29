@@ -20,6 +20,7 @@ export class GamesComponent implements OnInit {
  public readonly user: Observable<any | null> = EMPTY;
  loggedIn: boolean = false;
   key : string ='session'
+  idprueba!: number;
 
   //producto a imprimir
   videogame: any = {};
@@ -36,8 +37,9 @@ export class GamesComponent implements OnInit {
 
 
 
+
   constructor( @Optional() /*private auth: Auth, */ private api: ApiService, private router: ActivatedRoute) {
-    console.log('dentro de ver producto CONSTRUCTOR ');
+    console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 
 
@@ -46,9 +48,8 @@ export class GamesComponent implements OnInit {
 
 
 
-
     this.router.params.subscribe((params) => {
-      this.getVideogame(params['id']);
+      this.datos_del_juego(params['id']);
       //prueba en consola
       console.log('llego ' + params['id']);
     });
@@ -78,20 +79,22 @@ export class GamesComponent implements OnInit {
   }
 
   //metodo que busca productos
-  getVideogame(id: string) {
-    console.log('dentro de ver producto GETPRODUCT');
+  datos_del_juego(id: string) {
+    console.log('datos_del_juego');
     this.loadingProduct = true;
 
     //se obtienen los datos del producto seleccionado
-    this.api.getaVideogame(id).subscribe((videogame) => {
-      console.log('ver producto PRODUCT = ' + videogame);
+    this.api.getjuego_por_id(id).subscribe((videogame) => {
+
+      this.idprueba=videogame.JuegoID;
+      console.log('Games getjuego_por_id = ' + this.idprueba);
       console.log(videogame);
 
       //se meten los datos de la BD a nuestra variable
       this.videogame = videogame;
 
       //prueba en consola
-      console.log(this.videogame.title);
+      console.log(this.videogame.NombreJuego);
 
       this.loadingProduct = false;
     });

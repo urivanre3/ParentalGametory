@@ -21,14 +21,12 @@ export class SearchComponent implements OnInit {
   search(word: string) {
     console.log('search');
     this.flag_loading = true;
-
-
     
     if(word !=""){
-      this.api.getVideogames_by_name(word).subscribe((res:any) => {
+      this.api.get_juegos_por_nombre(word).subscribe((res:any) => {
         console.log('search this api gets');
         this.videogames = res.data;
-        console.log('this.videogames ' + this.videogames[0].titulo);
+        console.log('this.videogames ' + this.videogames[0].NombreJuego);
        /*  this.str = JSON.stringify(this.videogames);
        
         console.log(this.str); // Logs output to dev tools console. */

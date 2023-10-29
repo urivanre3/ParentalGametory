@@ -1,24 +1,21 @@
 <div class="card-deck">
-    <ng-container *ngFor="let item of items">
-      <div class="card">
-        <img class="card-img-top" src="{{ item.portadaURL }}" alt="Card image cap"/>
-        <div class="card-body">
-          <div
-            (click)="seeProduct(item)"
-            class="cardpuntero"
-            *ngIf="showCard(item)"
-          >
-            <p>Product: {{ item.titulo }}</p>
-          </div>
-          <div class="card-footer">
-            <small>
-              Category: {{ item.categoria }} <br />
-              Manufacturer: {{ item.educatividad }} <br />
-              <b> Price: {{ item.puntuacion }} </b> <br />
-            </small>
-          </div>
+  <ng-container *ngFor="let item of items">
+    <div class="card">
+      <img class="card-img-top imagen-de-prueba" src="{{ item.portadaURL }}" alt="Imagen de Juego" (error)="onImageError($event)" />
+      <div class="card-body">
+        <div (click)="seeProduct(item)" class="cardpuntero" *ngIf="showCard(item)">
+          <p>Titulo: {{ item.NombreJuego }}</p>
+        </div>
+        <div class="card-footer">
+          <small>
+            <p>Descripcion: {{ item.Descripcion }}</p>
+            Category: {{ item.categoria }} <br />
+            <!-- Manufacturer: {{ item.educatividad }} <br />
+            <b> Price: {{ item.puntuacion }} </b> <br /> -->
+          </small>
         </div>
       </div>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
+</div>
   
