@@ -24,6 +24,7 @@ import { AuthInterceptor } from './shared/AuthInterceptor';
 import { SidebarComponent } from './admin/sidebar/sidebar.component';
 import { HeaderComponent } from './admin/header/header.component';
 import { PagetitleComponent } from './admin/pagetitle/pagetitle.component'; 
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { PagetitleComponent } from './admin/pagetitle/pagetitle.component';
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

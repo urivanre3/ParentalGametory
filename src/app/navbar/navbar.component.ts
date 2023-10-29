@@ -79,11 +79,11 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  openModal(): void {
+  abrirModal(): void {
     this.modal.show();
   }
 
-  async login() {
+  async iniciodesesion() {
     this.aux.email=this.form.value['email'];
     this.aux.password=this.form.value['password'];
 /*     await signInWithEmailAndPassword(this.auth, this.form.value['email'], this.form.value['password'])
@@ -95,10 +95,11 @@ export class NavbarComponent implements OnInit {
       }); */
 
       console.log(this.aux);
-      this.api.singin(this.aux).subscribe( (res:any) => {
+      this.api.iniciar_sesion(this.aux).subscribe( (res:any) => {
         console.log(res);
         localStorage.setItem('token',res.token);
-        this.router.navigate(['home']);
+        this.router.navigate(['/home']);
+        this.modal.hide();
       })
   }
 

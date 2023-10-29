@@ -35,7 +35,7 @@ export class AppComponent {
 
       let data = localStorage.getItem("key");
        
-        this.api.singin(data).subscribe((res:any) => {
+        this.api.iniciar_sesion(data).subscribe((res:any) => {
           console.log('session this api gets');
           this.user = res.data;
           console.log('this.user ' + this.user[0].titulo);

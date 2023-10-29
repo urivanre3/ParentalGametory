@@ -9,16 +9,18 @@ import { VideogamesComponent } from './admin/videogames/videogames.component';
 import { RoleGuard } from './shared/role.guard';
 import { SignupComponent } from './signup/signup.component';
 import { SearchComponent } from './search/search.component';
+import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
 
 
-  {path: 'home', component:HomeComponent},
   {path:'app' , component:AppComponent},
  
-  {path: 'product:id', component: GamesComponent},
-  {path: 'product/:id', component: GamesComponent},
 
+/*   {path: 'videojuego/:id', component: GamesComponent, canActivate: [AuthGuard]}, */
+  
+  {path: 'videojuego/:id', component: GamesComponent},
+ 
   {path: 'signup', component: SignupComponent},
 
   {path: 'home', component: HomeComponent},

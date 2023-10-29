@@ -61,7 +61,7 @@ export class GamesComponent implements OnInit {
 
       let data = localStorage.getItem("key");
        
-        this.api.singin(data).subscribe((res:any) => {
+        this.api.iniciar_sesion(data).subscribe((res:any) => {
           console.log('session this api gets');
           
           this.loggedIn = true;
@@ -74,7 +74,7 @@ export class GamesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log('pagina de juegos');
   }
 
   //metodo que busca productos

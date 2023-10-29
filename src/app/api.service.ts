@@ -23,6 +23,23 @@ export class ApiService {
     return true;
   }
 
+
+//registrar un usuario nuevo
+registrarUsuario(data: any): Observable<any> {
+  return this._http.post(`${this.apiUrl}/registrarUsuario`, data);
+}
+//iniciar sesion de usuario
+iniciar_sesion(data:any){    
+  return this._http.post(`${this.apiUrl}/iniciarSesion`, data);
+}
+
+//Obtener token JWT para verificar sesion abierta
+getToken(): string | null {
+  return localStorage.getItem('token');
+}
+
+
+
   /////Videogame/////
 
   //obtener un videojuego por id
@@ -53,14 +70,13 @@ export class ApiService {
     return this._http.get(`${this.apiUrl}/${id}`);
   }
    
-  singin(data:any){    
-    return this._http.post(`${this.apiUrl}/UserbyData`, data);
-  }
 
-  //crear un nuevo usuario
-  addCustomer(data:any): Observable<any>{
-    return this._http.post(`${this.apiUrl}/addcustomer`, data);
-  }
+
+
+
+
+
+
   
   //obtener la lista de videojuegos de un usuario
   getVideogameList(id:any): Observable<any>{

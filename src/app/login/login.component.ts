@@ -38,7 +38,7 @@ constructor(private api : ApiService, private router: Router ) {
 
     logIn(){
       console.log(this.user);
-      this.api.singin(this.user).subscribe( (res:any) => {
+      this.api.iniciar_sesion(this.user).subscribe( (res:any) => {
         console.log(res);
         localStorage.setItem('token',res.token);
         this.router.navigate(['private']);

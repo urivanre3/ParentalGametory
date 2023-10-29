@@ -17,31 +17,31 @@ export class SignupComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router) {
     // Form
     this.form = new FormGroup({
-      'displayName': new FormControl('', [Validators.required, Validators.minLength(3)]),
-      'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', [Validators.required, Validators.minLength(8)]),
-      'confirmPassword': new FormControl('', [Validators.required, Validators.minLength(8)]),
-      'address': new FormControl('', [Validators.required, Validators.minLength(3)]),
-      'city': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'nombre': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'correo': new FormControl('', [Validators.required, Validators.email]),
+      'contraseña': new FormControl('', [Validators.required, Validators.minLength(8)]),
+      'confirmacion_contraseña': new FormControl('', [Validators.required, Validators.minLength(8)]),
+      /* 'address': new FormControl('', [Validators.required, Validators.minLength(3)]),
+      'city': new FormControl('', [Validators.required, Validators.minLength(3)]), */
     }, {
-      validators: this.mustMatch
+      validators: this.es_igual
     });
   }
 
   ngOnInit() { }
 
-  signUp(): void {
+  Registro(): void {
     if (this.form.valid) {
-      this.apiService.addCustomer(this.form.value).subscribe(async () => {
+      this.apiService.registrarUsuario(this.form.value).subscribe(async () => {
         this.router.navigate(['/home']);
       });
     }
   }
 
-  mustMatch: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
-    let pass = group.get('password')!.value;
-    let confirmPass = group.get('confirmPassword')!.value
-    return pass === confirmPass ? null : { mustMatch: true }
+  es_igual: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    let contraseña = group.get('contraseña')!.value;
+    let confirmacontraseña = group.get('confirmacion_contraseña')!.value
+    return contraseña === confirmacontraseña ? null : { mustMatch: true }
   }
 
   
