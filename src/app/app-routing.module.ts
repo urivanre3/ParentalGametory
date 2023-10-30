@@ -20,7 +20,8 @@ const routes: Routes = [
 /*   {path: 'videojuego/:id', component: GamesComponent, canActivate: [AuthGuard]}, */
   
   {path: 'videojuego/:id', component: GamesComponent},
- 
+  {path: 'videojuego:id', component: GamesComponent},
+  
   {path: 'signup', component: SignupComponent},
 
   {path: 'home', component: HomeComponent},

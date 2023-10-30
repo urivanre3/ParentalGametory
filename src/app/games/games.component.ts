@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional, ViewChild } from '@angular/core';
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
@@ -18,22 +18,18 @@ export class GamesComponent implements OnInit {
   // Attributes
  /*  public readonly user: Observable<User | null> = EMPTY; */
  public readonly user: Observable<any | null> = EMPTY;
- loggedIn: boolean = false;
+  loggedIn: Observable<boolean> = new Observable<boolean>();
   key : string ='session'
   idprueba!: number;
 
   //producto a imprimir
-  videogame: any = {};
+  juego: any = {};
   //cantidad a comprar
   amount: number = 0;
 
   loadingProduct: boolean;
 
-/*   //generacion de QR aleatorio
-  urls: any[] = [];
-  random: number = 0;
-  flag_qr: boolean = false;
- */
+
 
 
 
@@ -43,36 +39,50 @@ export class GamesComponent implements OnInit {
     this.loadingProduct = true;
 
 
-/*     this.random = Math.floor(Math.random() * (9 - 0)) + 0;
-    console.log("Numero aleatorio == " + this.random); */
-
-
-
     this.router.params.subscribe((params) => {
       this.datos_del_juego(params['id']);
       //prueba en consola
       console.log('llego ' + params['id']);
     });
-
+      
     // Auth
-/*     if (auth) {
+ /*    if (auth) {
       this.user = authState(this.auth);
     } */
-    if (localStorage.getItem(this.key)) {
-
-      let data = localStorage.getItem("key");
-       
-        this.api.iniciar_sesion(data).subscribe((res:any) => {
-          console.log('session this api gets');
-          
-          this.loggedIn = true;
-        });
-  
-      }else{
-        console.log('No data detected');      
-      
-    }
+ 
   }
+
+
+  isUserAuthenticated(): boolean {
+    const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
+  
+    if (token) {
+      // Si hay un token en el localStorage, verifiquemos si ha expirado o no.
+      const tokenData = JSON.parse(atob(token.split('.')[1])); // Decodificamos la parte del payload del token.
+  
+      if (tokenData.exp) {
+        // La propiedad 'exp' en el token indica la fecha de vencimiento en segundos desde 1970.
+        const expirationTimestamp = tokenData.exp * 1000; // Convertimos a milisegundos.
+  
+        // Obtenemos la hora actual en milisegundos.
+        const currentTimestamp = Date.now();
+  
+        // Si la fecha de vencimiento es posterior a la hora actual, el token aún no ha expirado.
+        if (expirationTimestamp > currentTimestamp) {
+
+          console.log(" GAMES.TS AUTENTIFICADO");
+          return true;
+          
+        }
+      }
+    }
+  
+    // Si no hay token, si ha expirado o cualquier otro caso, retornamos false.
+
+    console.log(" GAMES.TS  NO AUTENTIFICADO");
+    return false;
+  }
+
 
   ngOnInit(): void {
     console.log('pagina de juegos');
@@ -85,18 +95,12 @@ export class GamesComponent implements OnInit {
 
     //se obtienen los datos del producto seleccionado
     this.api.getjuego_por_id(id).subscribe((videogame) => {
+      this.juego = videogame.data[0];
+      console.log('Games getjuego_por_id = ' + this.juego.JuegoID);
+      console.log('nombre de juego = ' + this.juego.NombreJuego);
 
-      this.idprueba=videogame.JuegoID;
-      console.log('Games getjuego_por_id = ' + this.idprueba);
-      console.log(videogame);
 
-      //se meten los datos de la BD a nuestra variable
-      this.videogame = videogame;
-
-      //prueba en consola
-      console.log(this.videogame.NombreJuego);
-
-      this.loadingProduct = false;
+      this.loadingProduct = true;
     });
   }
 

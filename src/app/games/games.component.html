@@ -1,5 +1,5 @@
-<!-- <app-loading *ngIf="loadingProduct"></app-loading> -->
-<div class="row animated fadeIn" *ngIf="!loadingProduct">
+
+<div class="row animated fadeIn" >
   <div class="container">
     <div class="container1">
       <div class="container2">
@@ -13,36 +13,37 @@
           </div>
         </div>
 
-      <!--   <div class="qr">
-          <qrcode *ngIf="flag_qr === true" [qrdata]="urls[random].url" [errorCorrectionLevel]="'M'"></qrcode>
-        </div> -->
+    
       </div>
 
       <div class="card">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="{{ videogame.portadaURL }}" width="1fr" class="card-img-top" alt="error" />
+            <img src="{{ juego.portadaURL }}" width="1fr" class="card-img-top" alt="error" />
           </div>
 
           <div class="card-body">
-            <h5 class="card-title">{{ videogame.titulo }}</h5>
-            <p class="card-text">{{ videogame.descripcion }}</p>
+            <h5 class="card-title">{{ juego.NombreJuego }}</h5>
+            <p class="card-text">{{ juego.Descripcion }}</p>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Manufacturer: {{ videogame.categoria }}
+              Manufacturer: {{ juego.categoria }}
             </li>
-            <li class="list-group-item">Category: {{ videogame.clasificacion }}</li>
+            <li class="list-group-item">Category: {{ juego.clasificacion }}</li>
             <li class="list-group-item">
-              SubCategory: {{ videogame.puntuacion }}
+              SubCategory: {{ juego.puntuacion }}
             </li>
         <!--     <li class="list-group-item">Contents: {{ videogame.contents }}</li> -->
           
           </ul>
-          <div class="card-body" *ngIf="(user | async)">
+
+          <div class="card-body" *ngIf="isUserAuthenticated()">
+            Contenido que deseas mostrar cuando el usuario esté autenticado
+         
            <!--  <input name="amount_input" [(ngModel)]="amount" #name="ngModel" type="number" class="form-control" min="1"
               max="99" required /> -->
-            <span class="validity"></span>
+            <span class="validity">Pruebaaaa</span>
            <!--  <button class="btn btn-success" *ngIf="!name.invalid" (click)="addProduct_tocart_byid(name.value)">
               Add To Cart
             </button> -->
