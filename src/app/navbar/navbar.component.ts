@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { EMPTY, map, Observable, of, Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 declare var window: any;
 
 @Component({
@@ -16,30 +17,25 @@ export class NavbarComponent implements OnInit {
 
   // View
   @ViewChild('wrongData')
-  public readonly wrongData!: SwalComponent;
- 
+  public readonly wrongData!: SwalComponent; 
   // Modal
   modal: any;
-
   // Attributes
   private readonly userDisposable: Subscription | undefined;
 
-  aux = {
-    email: '',
-    password: ''
-  }
-
+  aux = {  email: '',  password: '' }
   // Form
   form: FormGroup;
 
   // Show
-  loggedIn: Observable<boolean> = EMPTY; // Cambio a Observable para reflejar el estado de autenticación
-  user: Observable<any | null> = EMPTY;
+  loggedIn: Observable<boolean> = of(false);
+  userData: any = null;
+  
 
 
 
   // Constructor
-  constructor( private api: ApiService, private router: Router) {
+  constructor( private api: ApiService, private jwtHelper: JwtHelperService, private router: Router) {
     
     // Form
     this.form = new FormGroup({
@@ -47,13 +43,7 @@ export class NavbarComponent implements OnInit {
       'password': new FormControl('', Validators.required)
     });
 
-    this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
-      this.loggedIn = of(authenticated); // Conviértelo a un Observable
-    });
-    
-    this.api.getUserData().subscribe((userData: any) => {
-      this.user = of(userData); // Conviértelo a un Observable
-    });
+
 
   }
 
@@ -81,16 +71,45 @@ export class NavbarComponent implements OnInit {
 
       console.log(this.aux);
       this.api.iniciar_sesion(this.aux).subscribe( (res:any) => {
-        console.log(res);
-        localStorage.setItem('token',res.token);
-        this.router.navigate(['/home']);
-        this.modal.hide();
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+    
+          // Verificar si el token es válido
+          if (!this.jwtHelper.isTokenExpired(res.token)) {
+            // Decodificar el token para obtener los datos del usuario
+            const userData = this.jwtHelper.decodeToken(res.token);
+            console.log('Datos del usuario:', userData);
+    
+            // Ahora puedes acceder a los datos del usuario, por ejemplo:
+            const userId = userData.UsuarioID;
+            const userName = userData.NombreUsuario;
+            const userEmail = userData.CorreoElectronico;
+
+
+            console.log('UsuarioID:', userData.UsuarioID);
+            console.log('NombreUsuario:', userData.NombreUsuario);
+            console.log('CorreoElectronico:', userData.CorreoElectronico);
+    
+            // Redirige al usuario a la página de inicio
+            this.router.navigate(['/home']);
+            this.modal.hide();
+          }
+          
+        }
       })
   }
 
   async logout() {
-
-    this.router.navigate(['/home']);
+    // Llamada a la función del servicio para cerrar la sesión
+    this.api.logout().subscribe(() => {
+      // Elimina el token
+      localStorage.removeItem('token');
+      console.log("Sesión cerrada exitosamente");
+      // Actualiza loggedIn a false ya que el usuario ha cerrado la sesión
+      this.loggedIn = of(false);
+      // Redirige al usuario a la página de inicio
+      this.router.navigate(['/home']);
+    });
   }
 
 

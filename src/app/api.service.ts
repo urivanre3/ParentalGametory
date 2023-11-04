@@ -20,6 +20,22 @@ export class ApiService {
 
 
 /////////USUARIOS//////
+
+
+logout(): Observable<any> {
+  // Elimina el token del almacenamiento local
+  localStorage.removeItem('token');
+
+  // Aquí puedes realizar cualquier otra acción necesaria para cerrar la sesión.
+
+  // Devuelve un observable, por ejemplo, un observable vacío.
+  return new Observable(observer => {
+    observer.complete(); // Emite una notificación de completado.
+  });
+}
+
+
+
 //registrar un usuario nuevo
 registrarUsuario(data: any): Observable<any> {
   return this._http.post(`${this.apiUrl}/registrarUsuario`, data);
@@ -49,20 +65,8 @@ isAuth():boolean{
   return true;
 }
 
- // Obtiene los datos del usuario con sesión activa
- getUserData(): Observable<any | null> {
-  const token = localStorage.getItem('token');
-  if (this.jwtHelper.isTokenExpired(token) || !token) {
-    // Si el token ha expirado o no está presente, no hay sesión activa
-    return of(null);
-  } else {
-    // Realiza una solicitud al servidor para obtener los datos del usuario con el token
-    return this._http.get(`${this.apiUrl}/getUserData`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+getUserData(userId: string): Observable<any | null> {
+  return this._http.get(`${this.apiUrl}/getUserData/${userId}`);
 }
 
 
