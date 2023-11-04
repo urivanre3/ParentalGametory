@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -15,15 +15,9 @@ export class ApiService {
   }
 
  
-  isAuth():boolean{
-    const token = localStorage.getItem('token');
-    if(this.jwtHelper.isTokenExpired(token) || !localStorage.getItem('token')){
-      return false;
-    }
-    return true;
-  }
 
 
+/////////USUARIOS//////
 //registrar un usuario nuevo
 registrarUsuario(data: any): Observable<any> {
   return this._http.post(`${this.apiUrl}/registrarUsuario`, data);
@@ -38,6 +32,43 @@ getToken(): string | null {
   return localStorage.getItem('token');
 }
   
+
+// En lugar de devolver un boolean, devuelve un Observable<boolean>
+isUserAuthenticated(): Observable<boolean> {
+  const token = localStorage.getItem('token');
+  return of(!this.jwtHelper.isTokenExpired(token) && !!token);
+}
+
+isAuth():boolean{
+  const token = localStorage.getItem('token');
+  if(this.jwtHelper.isTokenExpired(token) || !localStorage.getItem('token')){
+    return false;
+  }
+  return true;
+}
+
+ // Obtiene los datos del usuario con sesión activa
+ getUserData(): Observable<any | null> {
+  const token = localStorage.getItem('token');
+  if (this.jwtHelper.isTokenExpired(token) || !token) {
+    // Si el token ha expirado o no está presente, no hay sesión activa
+    return of(null);
+  } else {
+    // Realiza una solicitud al servidor para obtener los datos del usuario con el token
+    return this._http.get(`${this.apiUrl}/getUserData`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+}
+
+
+
+
+/////////Videojuegos//////
+
+
 //obtener los videojuegos por el nombre
 get_juegos_por_nombre(search: string):Observable<any> {
   return this._http.get(`${this.apiUrl}/${search}`);
@@ -50,57 +81,7 @@ getjuego_por_id(id:string):Observable<any> {
 
 
 
-
-
-  /////Videogame/////
-
-
-
-  //agregar videojuego
-  addVideogame(videojuego:Videojuego)
-  {
-    return this._http.post(`${this.apiUrl}/AddVideogame`, videojuego);
-  }
-
-  //Get all data
-  getAllData():Observable<any>{
-    return this._http.get(`${this.apiUrl}`);
-  }
-
-  //////
-  ////USERS/////
-  getSingleUser(id: number):Observable<any>{
-    return this._http.get(`${this.apiUrl}/${id}`);
-  }
-   
-
-
-
-
-
-
-
-  
-  //obtener la lista de videojuegos de un usuario
-  getVideogameList(id:any): Observable<any>{
-    return this._http.get(`${this.apiUrl}/${id}`);
-  }
-  
-  //Añadir un videjuego a la lista del usuario
-  addToVideogameList(list:any): Observable<any>{
-    return this._http.post(`${this.apiUrl}`, list);
-  }
-
-  //Edit User
-  editUser(id: number, value: any): Observable<Object> {
-    return this._http.put(`${this.apiUrl}/${id}`, value);
-  }
-  
-  //Delete User
-  deleteUser(id: number): Observable<any> {
-    return this._http.delete(`${this.apiUrl}/${id}`);
-  }
-  
+ 
 
 }
 
@@ -117,38 +98,4 @@ export interface Videojuego{
 }
 
 
-
-/* 
-
-  //get videojuego
-  getVideogames()
-  {
-    return this._http.get(this.url);
-  }
-
-  //obtener un videojuego por id
-  //get un videojuego
-  getaVideogame(id:string){
-    return this._http.get(this.url+'/'+id);
-  }
-
-
-
-  //agregar videojuego
-  addVideogame(videojuego:Videojuego)
-  {
-    return this._http.post(this.url, videojuego);
-  }
-
-
-  //eliminar
-  deleteVideojuego(id:string){
-    return this._http.delete(this.url+'/'+id);
-  }
-
-  //modificar videojuego
-  editVideojuego(id:string, videojuego:Videojuego){
-    return this._http.put(this.url+'/'+id, videojuego);
-  }
- */
 

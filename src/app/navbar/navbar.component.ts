@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
-/* import { Auth, authState, User, signInWithEmailAndPassword, signOut } from '@angular/fire/auth'; */
-/* import { traceUntilFirst } from '@angular/fire/performance'; */
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { EMPTY, map, Observable, Subscription } from 'rxjs';
+import { EMPTY, map, Observable, of, Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
 declare var window: any;
 
@@ -25,7 +23,7 @@ export class NavbarComponent implements OnInit {
 
   // Attributes
   private readonly userDisposable: Subscription | undefined;
-  public readonly user : Observable<any | null> = EMPTY;
+
   aux = {
     email: '',
     password: ''
@@ -35,35 +33,28 @@ export class NavbarComponent implements OnInit {
   form: FormGroup;
 
   // Show
-  loggedIn: boolean = false;
+  loggedIn: Observable<boolean> = EMPTY; // Cambio a Observable para reflejar el estado de autenticación
+  user: Observable<any | null> = EMPTY;
+
+
 
   // Constructor
-  constructor(/* @Optional() private auth: Auth, */ private api: ApiService, private router: Router) {
-    /* if (auth) {
-      this.user = authState(this.auth);
-
-      this.userDisposable = authState(this.auth).pipe(
-        traceUntilFirst('auth'),
-        map(u => !!u)
-      ).subscribe(isLoggedIn => {        
-        if (isLoggedIn) {
-          this.loggedIn = isLoggedIn;
-          apiService.getCustomer(auth.currentUser?.uid ?? '').subscribe(async (user: any) => {
-            if (user.customClaims && user.customClaims['admin']) {
-              await this.wrongData.fire();
-              await signOut(this.auth);
-            }
-          });
-          //router.navigate(['/admin']);
-        }
-      });
-    } */
+  constructor( private api: ApiService, private router: Router) {
     
     // Form
     this.form = new FormGroup({
       'email': new FormControl('', Validators.required),
       'password': new FormControl('', Validators.required)
     });
+
+    this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
+      this.loggedIn = of(authenticated); // Conviértelo a un Observable
+    });
+    
+    this.api.getUserData().subscribe((userData: any) => {
+      this.user = of(userData); // Conviértelo a un Observable
+    });
+
   }
 
   // OnInit
@@ -86,13 +77,7 @@ export class NavbarComponent implements OnInit {
   async iniciodesesion() {
     this.aux.email=this.form.value['email'];
     this.aux.password=this.form.value['password'];
-/*     await signInWithEmailAndPassword(this.auth, this.form.value['email'], this.form.value['password'])
-      .then((user) => {
-        this.modal.hide();
-      })
-      .catch(async (error) => {
-        await this.wrongData.fire();        
-      }); */
+
 
       console.log(this.aux);
       this.api.iniciar_sesion(this.aux).subscribe( (res:any) => {
@@ -104,8 +89,15 @@ export class NavbarComponent implements OnInit {
   }
 
   async logout() {
-   /*  await signOut(this.auth); */
+
     this.router.navigate(['/home']);
   }
+
+
+  
+
+
+
+
 
 }
