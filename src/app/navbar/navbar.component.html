@@ -33,11 +33,20 @@
                     </ul>
                 </li>
             </ul>
+            
             <form class="d-flex container-fluid justify-content-start">
                 <a class="ms-auto" [routerLink]="['/mycart'] ">
                     <img src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/cart.png?alt=media&token=ed6f89e4-4e6c-4575-b45b-e2e03357ad46"
                         alt="" width="35" height="35" class="d-inline-block">
                 </a>
+                
+
+                <div class="divImagenUsuario" *ngIf="loggedIn">
+
+                    <img class="ImagenUsuario" src="/assets/ImagenUsuario.jpg" alt="" >
+                                     
+                </div>  
+
                 <div class="header p-0" style="background-color: transparent;" *ngIf="loggedIn">
                     <div class="container-fluid">
                         <div class="row">
@@ -48,22 +57,22 @@
                                             id="profile" data-bs-toggle="dropdown" aria-expanded="false">
                                             <div class="profile-info">
                                                 <div class="info">
-                                                  <!--   <h6>{{(user | async)?.NombreUsuario}}</h6>
+                                                    <h6>{{userData.NombreUsuario}}</h6>
                                                     <div class="image">
-                                                        <img [src]="(user | async)?.photoURL" alt="">
-                                                        <span class="status"></span>
-                                                    </div> -->
+                                                                    
+                                                    </div>
                                                 </div>
                                             </div>
                                             <i class="bi bi-chevron-down"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end mt-0" aria-labelledby="profile">
                                             <li>
-                                                <a [routerLink]="'/orders'">
+                                                <a [routerLink]="'/perfiles'">
                                                     <i class="bi bi-list"></i> Perfiles
                                                 </a>
                                             </li>
                                             <li>
+                                               
                                                 <a (click)="logout()" role="button"><i class="bi bi-box-arrow-left"></i>
                                                     Cerrar Sesion</a>
                                             </li>
@@ -75,6 +84,7 @@
                     </div>
                 </div>
             </form>
+                
         </div>
     </div>
 </nav>

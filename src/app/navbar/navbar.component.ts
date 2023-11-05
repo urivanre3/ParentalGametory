@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { EMPTY, map, Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
 declare var window: any;
 
 @Component({
@@ -12,51 +11,41 @@ declare var window: any;
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-
-
-  // View
+export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('wrongData')
-  public readonly wrongData!: SwalComponent; 
-  // Modal
+  public readonly wrongData!: SwalComponent;
   modal: any;
-  // Attributes
-  private readonly userDisposable: Subscription | undefined;
 
-  aux = {  email: '',  password: '' }
-  // Form
+  aux = { email: '', password: '' };
   form: FormGroup;
 
-  // Show
-  loggedIn: Observable<boolean> = of(false);
+  private userSubscription: Subscription | undefined; // Para gestionar la suscripción
+  loggedIn = false; // Cambiado a un valor booleano
   userData: any = null;
-  
 
-
-
-  // Constructor
-  constructor( private api: ApiService, private jwtHelper: JwtHelperService, private router: Router) {
-    
-    // Form
+  constructor(private api: ApiService, private router: Router) {
     this.form = new FormGroup({
       'email': new FormControl('', Validators.required),
       'password': new FormControl('', Validators.required)
     });
 
-
-
+    this.userSubscription = this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
+      this.loggedIn = authenticated;
+      if (authenticated) {
+        this.api.getUserData().subscribe((userData: any) => {
+          this.userData = userData; // Asigna los datos del usuario
+        });
+      }
+    });
   }
 
-  // OnInit
   ngOnInit(): void {
-    this.modal = new window.bootstrap.Modal(
-      document.getElementById('modal')
-    );
+    this.modal = new window.bootstrap.Modal(document.getElementById('modal'));
   }
 
   ngOnDestroy(): void {
-    if (this.userDisposable) {
-      this.userDisposable.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe(); // Asegúrate de cancelar la suscripción cuando el componente se destruye
     }
   }
 
@@ -65,58 +54,34 @@ export class NavbarComponent implements OnInit {
   }
 
   async iniciodesesion() {
-    this.aux.email=this.form.value['email'];
-    this.aux.password=this.form.value['password'];
+    this.aux.email = this.form.value['email'];
+    this.aux.password = this.form.value['password'];
 
+    this.api.iniciar_sesion(this.aux).subscribe((res: any) => {
+      localStorage.setItem('token', res.token);
 
-      console.log(this.aux);
-      this.api.iniciar_sesion(this.aux).subscribe( (res:any) => {
-        if (res.token) {
-          localStorage.setItem('token', res.token);
-    
-          // Verificar si el token es válido
-          if (!this.jwtHelper.isTokenExpired(res.token)) {
-            // Decodificar el token para obtener los datos del usuario
-            const userData = this.jwtHelper.decodeToken(res.token);
-            console.log('Datos del usuario:', userData);
-    
-            // Ahora puedes acceder a los datos del usuario, por ejemplo:
-            const userId = userData.UsuarioID;
-            const userName = userData.NombreUsuario;
-            const userEmail = userData.CorreoElectronico;
+      // Después de iniciar sesión, actualiza el estado de autenticación y los datos del usuario
+      this.loggedIn = true;
+      this.api.getUserData().subscribe((userData: any) => {
+        this.userData = userData;
+      });
 
-
-            console.log('UsuarioID:', userData.UsuarioID);
-            console.log('NombreUsuario:', userData.NombreUsuario);
-            console.log('CorreoElectronico:', userData.CorreoElectronico);
-    
-            // Redirige al usuario a la página de inicio
-            this.router.navigate(['/home']);
-            this.modal.hide();
-          }
-          
-        }
-      })
+      this.router.navigate(['/home']);
+      this.modal.hide();
+    });
   }
 
   async logout() {
-    // Llamada a la función del servicio para cerrar la sesión
     this.api.logout().subscribe(() => {
       // Elimina el token
       localStorage.removeItem('token');
       console.log("Sesión cerrada exitosamente");
-      // Actualiza loggedIn a false ya que el usuario ha cerrado la sesión
-      this.loggedIn = of(false);
-      // Redirige al usuario a la página de inicio
+
+      // Después de cerrar sesión, actualiza el estado de autenticación y los datos del usuario
+      this.loggedIn = false;
+      this.userData = null;
+
       this.router.navigate(['/home']);
     });
   }
-
-
-  
-
-
-
-
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -23,15 +23,23 @@ export class ApiService {
 
 
 logout(): Observable<any> {
-  // Elimina el token del almacenamiento local
-  localStorage.removeItem('token');
+  const token = localStorage.getItem('token');
 
-  // Aquí puedes realizar cualquier otra acción necesaria para cerrar la sesión.
+  // Si no hay token en el almacenamiento local, emite una notificación de completado.
+  if (!token) {
+    return new Observable(observer => {
+      observer.complete();
+    });
+  }
 
-  // Devuelve un observable, por ejemplo, un observable vacío.
-  return new Observable(observer => {
-    observer.complete(); // Emite una notificación de completado.
-  });
+  // Realiza una solicitud al servidor para cerrar la sesión.
+  return this._http.post(`${this.apiUrl}/logout`, {}).pipe(
+    map(() => {
+      // Después de cerrar la sesión en el servidor, elimina el token del almacenamiento local.
+      localStorage.removeItem('token');
+      return null; // Puedes emitir cualquier valor que desees aquí.
+    })
+  );
 }
 
 
@@ -65,8 +73,23 @@ isAuth():boolean{
   return true;
 }
 
-getUserData(userId: string): Observable<any | null> {
-  return this._http.get(`${this.apiUrl}/getUserData/${userId}`);
+getUserData(): Observable<any | null> {
+  const token = localStorage.getItem('token');
+  if (this.jwtHelper.isTokenExpired(token) || !token) {
+    // Si el token ha expirado o no está presente, no hay sesión activa
+    return of(null);
+  } else {
+    // Realiza una solicitud al servidor para obtener los datos del usuario con el token
+    return this._http.get(`${this.apiUrl}/getUserData`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).pipe(
+      map((userData: any) => {
+        return userData; // Devuelve los datos del usuario
+      })
+    );
+  }
 }
 
 

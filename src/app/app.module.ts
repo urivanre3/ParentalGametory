@@ -25,6 +25,7 @@ import { SidebarComponent } from './admin/sidebar/sidebar.component';
 import { HeaderComponent } from './admin/header/header.component';
 import { PagetitleComponent } from './admin/pagetitle/pagetitle.component'; 
 import { RouterModule } from '@angular/router';
+import { PerfilesComponent } from './perfiles/perfiles.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +42,7 @@ import { RouterModule } from '@angular/router';
     SidebarComponent,
     HeaderComponent,
     PagetitleComponent,
+    PerfilesComponent,
     
     
   ],

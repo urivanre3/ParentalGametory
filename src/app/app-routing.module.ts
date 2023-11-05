@@ -10,6 +10,7 @@ import { RoleGuard } from './shared/role.guard';
 import { SignupComponent } from './signup/signup.component';
 import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './shared/auth.guard';
+import { PerfilesComponent } from './perfiles/perfiles.component';
 
 const routes: Routes = [
 
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
 
   {path: 'home', component: HomeComponent},
+  {path: 'perfiles', component: PerfilesComponent},
 /*   {path: 'fruits', component: FruitsComponent},
   {path: 'vegetables', component: VegetablesComponent},
   {path: 'dairy', component: DairyComponent},
@@ -49,7 +51,7 @@ const routes: Routes = [
    
   {path: 'admin', pathMatch: 'full', redirectTo: 'admin/videogames'},
   {path: 'admin/videogames', component:VideogamesComponent},
-/* {path: 'admin/customers', component: CustomersComponent}, */
+
 /* {path: 'admin/orders', component: OrdersComponent}, */
 /* {path: 'admin/users', component: UsersComponent}, */
 /* {path: 'admin/reports', component: ReportsComponent}, */
