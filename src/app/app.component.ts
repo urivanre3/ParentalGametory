@@ -5,6 +5,8 @@ import { SignupComponent } from './signup/signup.component';
 import { VideogamesComponent } from './admin/videogames/videogames.component';
 import { ApiService } from './api.service';
 import { SigninComponent } from './admin/signin/signin.component';
+import { HomeComponent } from './home/home.component';
+import { PerfilesComponent } from './perfiles/perfiles.component';
 
 
 
@@ -65,18 +67,11 @@ export class AppComponent {
 
   // On Activated
   onActivated(component: any) {
-    this.isAdmin = component instanceof VideogamesComponent /* || component instanceof CustomersComponent || component instanceof OrdersComponent
-      || component instanceof UsersComponent || component instanceof ReportsComponent*/ || component instanceof SigninComponent; 
-
-    if (this.isAdmin) {
-      this.title = component.title;
-
-      if (!this.loggedIn) {
-        if (!(component instanceof SigninComponent)) this.router.navigate(['/admin/signin']);
-      }
-      
-      this.showSidebar = !(component instanceof SigninComponent);
-    } else if(component instanceof SignupComponent) this.showNavbar = false;
+    if(component instanceof SignupComponent) this.showNavbar = false;
+    if(component instanceof HomeComponent) this.showNavbar = true ,this.isAdmin=false;
+    if(component instanceof PerfilesComponent) this.showNavbar = false, this.isAdmin=true;
+    if(component instanceof SignupComponent) this.showNavbar = false;
+    if(component instanceof SignupComponent) this.showNavbar = false;
   }
 
 

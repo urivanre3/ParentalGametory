@@ -16,10 +16,27 @@ export class ApiService {
 
   
 
+///////// PERFILES //////////
+
+
+
+  buscarPerfiles(userId: string): Observable<any> {
+    // Realiza una solicitud al servidor para buscar perfiles relacionados al usuario
+    return this._http.get(`${this.apiUrl}/buscarPerfiles/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}` // Agrega el token de autenticación si es necesario
+      }
+    });
+  }
+
+
+
+
+
  
 
 
-/////////USUARIOS//////
+///////// USUARIOS //////////
 
 
 logout(): Observable<any> {
