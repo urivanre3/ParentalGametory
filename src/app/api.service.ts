@@ -31,10 +31,14 @@ export class ApiService {
 
 
 
+  crearPerfiles(data: any): Observable<any> {
+    return this._http.post(`${this.apiUrl}/crearPerfiles`, data);
+  }
 
-
- 
-
+  
+  crearInteres(data: any): Observable<any> {
+    return this._http.post(`${this.apiUrl}/crearInteres`, data);
+  }
 
 ///////// USUARIOS //////////
 
