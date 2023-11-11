@@ -103,6 +103,20 @@ export class PerfilesComponent implements OnInit {
       'Seleccionado Genero del objetivo: ',
       this.perfilSeleccionado.GeneroObjetivo
     );
+
+    this.api
+      .actualizarUltimoPerfil(
+        this.datosusuario.UsuarioID,
+        this.perfilSeleccionado.PerfilObjetivoID
+      )
+      .subscribe(
+        (response) => {
+          console.log('Campo UltimoPerfil actualizado con éxito:', response);
+        },
+        (error) => {
+          console.error('Error al actualizar el campo UltimoPerfil:', error);
+        }
+      );
   }
 
   ngOnInit(): void {}
@@ -131,6 +145,7 @@ export class PerfilesComponent implements OnInit {
 
     console.log('Datos del perfil a actualizar:', nuevosDatosPerfil);
 
+    // Actualizar el perfil
     this.api
       .actualizarPerfil(
         this.perfilAActualizar.PerfilObjetivoID,
@@ -152,28 +167,52 @@ export class PerfilesComponent implements OnInit {
           valor7: this.cualidadesValores.valor7,
           valor8: this.cualidadesValores.valor8,
         };
-        console.log('Datos del interés a actualizar:', nuevosDatosInteres);
-        // Verificar que perfilAActualizar no sea nulo antes de llamar a actualizarInteres
-        if (this.perfilAActualizar && this.perfilAActualizar.PerfilObjetivoID) {
-          // Actualizar el interés asociado al perfil
-          this.api
-            .actualizarInteres(
-              this.perfilAActualizar.PerfilObjetivoID,
-              nuevosDatosInteres
-            )
-            .subscribe(() => {
-              console.log('Interest updated successfully.');
-            });
-        } else {
-          console.error(
-            'Error: perfilAActualizar es nulo o no tiene PerfilObjetivoID'
-          );
-        }
 
-        // Resetear el perfil seleccionado
-        this.perfilSeleccionado = null;
-        this.perfilAActualizar = null;
+        console.log('Datos del interés a actualizar:', nuevosDatosInteres);
+
+        // Actualizar el interés asociado al perfil
+        this.api
+          .actualizarInteres(
+            this.perfilAActualizar.PerfilObjetivoID,
+            nuevosDatosInteres
+          )
+          .subscribe(() => {
+            console.log('Interest updated successfully.');
+            // Redirigir a la página de perfiles
+            this.redirigirAperfiles();
+          });
       });
+  }
+
+  // Función para redirigir a la página de perfiles
+  redirigirAperfiles() {
+    console.log('Redireccionando a la página de perfiles...');
+    // Restablecer las banderas booleanas
+    this.default = true;
+    this.mostrarAgregar = false;
+    this.mostrarActualizar = false;
+    this.mostrarBorrar = false;
+
+    // Limpiar los datos de nuevo perfil y cualidades
+    this.nuevoPerfil = {
+      usid_perfil: null,
+      nombre: '',
+      edad: null,
+      genero: '',
+    };
+    this.cualidadesValores = {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+      valor4: 0,
+      valor5: 0,
+      valor6: 0,
+      valor7: 0,
+      valor8: 0,
+    };
+
+    // Redirige a la página de perfiles
+    this.router.navigate(['/perfiles']);
   }
 
   // Function to show the update profile form
@@ -214,7 +253,6 @@ export class PerfilesComponent implements OnInit {
         }
       });
   }
-
   // Function to refresh the list of profiles
   actualizarListaPerfiles() {
     this.api
@@ -257,7 +295,7 @@ export class PerfilesComponent implements OnInit {
   agregarPerfil() {
     // Aquí debes enviar los datos del nuevo perfil al servidor o realizar la lógica necesaria
     console.log('Datos del nuevo perfil:', this.nuevoPerfil);
-
+  
     const valoresTemp = {
       PerfilObjID: null,
       valor1: this.cualidadesValores.valor1,
@@ -270,16 +308,22 @@ export class PerfilesComponent implements OnInit {
       valor8: this.cualidadesValores.valor8,
       // Añade las demás propiedades según sea necesario
     };
-
-    //crea el nuevo perfil
+  
+    // Crea el nuevo perfil
     this.api.crearPerfiles(this.nuevoPerfil).subscribe((resultado: any) => {
       console.log('Perfil creado con ID:', resultado.PerfilObjetivoID);
       valoresTemp.PerfilObjID = resultado.PerfilObjetivoID;
-
+  
       console.log('Datos del nuevo Interes:', valoresTemp);
-      //crea una nueva preferencia asociado al perfil creado
+      // Crea una nueva preferencia asociada al perfil creado
       this.api.crearInteres(valoresTemp).subscribe(() => {
-        console.log('Interes creado');
+        console.log('Interes creado exitosamente');
+  
+        // Actualiza la lista de perfiles después de la creación exitosa
+        this.actualizarListaPerfiles();
+  
+        // Redirige a la página de perfiles después de completar la creación
+        this.redirigirAperfiles();
       });
     });
   }

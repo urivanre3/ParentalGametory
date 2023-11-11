@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -26,18 +26,6 @@ export class ApiService {
     return this._http.post(`${this.apiUrl}/crearPerfiles`, data);
   }
 
-  crearInteres(data: any): Observable<any> {
-    return this._http.post(`${this.apiUrl}/crearInteres`, data);
-  }
-
-  obtenerInteres(perfilId: string): Observable<any> {
-    return this._http.get(`${this.apiUrl}/obtenerInteres/${perfilId}`, {
-      headers: {
-        Authorization: `Bearer ${this.getToken()}`,
-      },
-    });
-  }
-
   // Método en la clase ApiService
   actualizarPerfil(perfilId: string, nuevoPerfil: any): Observable<any> {
     return this._http.put(
@@ -49,6 +37,20 @@ export class ApiService {
         },
       }
     );
+  }
+
+  ////////////////INTERESES///////////////
+
+  crearInteres(data: any): Observable<any> {
+    return this._http.post(`${this.apiUrl}/crearInteres`, data);
+  }
+
+  obtenerInteres(perfilId: string): Observable<any> {
+    return this._http.get(`${this.apiUrl}/obtenerInteres/${perfilId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    });
   }
 
   actualizarInteres(
@@ -145,6 +147,42 @@ export class ApiService {
     }
   }
 
+  actualizarUltimoPerfil(
+    userId: string,
+    nuevoUltimoPerfilId: string
+  ): Observable<any> {
+    return this._http.put(
+      `${this.apiUrl}/actualizarUltimoPerfil/${userId}`,
+      { ultimoPerfilId: nuevoUltimoPerfilId },
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+      }
+    );
+  }
+
+  obtenerUltimoPerfil(userId: string): Observable<any> {
+    const url = `${this.apiUrl}/obtenerUltimoPerfil/${userId}`;
+    const token = this.getToken();
+  
+    if (!token) {
+      // Manejar la ausencia de token según tus necesidades
+      return throwError('No se proporcionó un token.');
+    }
+  
+    return this._http.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).pipe(
+      catchError(error => {
+        // Manejar errores aquí
+        console.error('Error en la solicitud obtenerUltimoPerfil:', error);
+        return throwError('Error en la solicitud obtenerUltimoPerfil.');
+      })
+    );
+  }
   /////////Videojuegos//////
 
   //obtener los videojuegos por el nombre
