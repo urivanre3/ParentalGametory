@@ -30,9 +30,6 @@ export class ApiService {
     return this._http.post(`${this.apiUrl}/crearInteres`, data);
   }
 
-
-
-
   obtenerInteres(perfilId: string): Observable<any> {
     return this._http.get(`${this.apiUrl}/obtenerInteres/${perfilId}`, {
       headers: {
@@ -41,38 +38,38 @@ export class ApiService {
     });
   }
 
-
-
-
   // Método en la clase ApiService
-actualizarPerfil(perfilId: string, nuevoPerfil: any): Observable<any> {
-  return this._http.put(`${this.apiUrl}/actualizarPerfil/${perfilId}`, nuevoPerfil, {
-    headers: {
-      Authorization: `Bearer ${this.getToken()}`
-    }
-  });
-}
+  actualizarPerfil(perfilId: string, nuevoPerfil: any): Observable<any> {
+    return this._http.put(
+      `${this.apiUrl}/actualizarPerfil/${perfilId}`,
+      nuevoPerfil,
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+      }
+    );
+  }
 
+  actualizarInteres(
+    perfilId: string,
+    nuevosDatosInteres: any
+  ): Observable<any> {
+    return this._http.put(
+      `${this.apiUrl}/actualizarInteres/${perfilId}`,
+      nuevosDatosInteres,
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+      }
+    );
+  }
 
-
-actualizarInteres(perfilId: string, nuevosDatosInteres: any): Observable<any> {
-  return this._http.put(
-    `${this.apiUrl}/actualizarInteres/${perfilId}`,
-    nuevosDatosInteres,
-    {
-      headers: {
-        Authorization: `Bearer ${this.getToken()}`,
-      },
-    }
-  );
-}
-
-
-borrarPerfilEInteres(perfilId: number): Observable<any> {
-  const url = `${this.apiUrl}/borrarPerfilEInteres/${perfilId}`;
-  return this._http.delete(url);
-}
-
+  borrarPerfilEInteres(perfilId: number): Observable<any> {
+    const url = `${this.apiUrl}/borrarPerfilEInteres/${perfilId}`;
+    return this._http.delete(url);
+  }
 
   ///////// USUARIOS //////////
 

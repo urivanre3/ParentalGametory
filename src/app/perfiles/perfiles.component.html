@@ -36,7 +36,11 @@
             </a>
           </li>
           <li>
-            <a class="nav-link borrar text-white" [class.disabled]="!perfilSeleccionado" (click)="borrarPerfil()">
+            <a
+              class="nav-link borrar text-white"
+              [class.disabled]="!perfilSeleccionado"
+              (click)="borrarPerfil()"
+            >
               Borrar Perfil
             </a>
           </li>
@@ -329,7 +333,13 @@
         <div class="row" *ngIf="mostrarBorrar">
           <!-- Contenido del div para Borrar Perfil -->
           <p>Aquí puedes borrar un perfil.</p>
-          <button class="btn btn-danger" [disabled]="!perfilSeleccionado" (click)="borrarPerfil()">Borrar Perfil</button>
+          <button
+            class="btn btn-danger"
+            [disabled]="!perfilSeleccionado"
+            (click)="borrarPerfil()"
+          >
+            Borrar Perfil
+          </button>
         </div>
       </div>
     </main>
