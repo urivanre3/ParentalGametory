@@ -36,11 +36,7 @@
             </a>
           </li>
           <li>
-            <a
-              class="nav-link borrar text-white"
-              [class.disabled]="!perfilSeleccionado"
-              (click)="mostrarBorrarPerfil()"
-            >
+            <a class="nav-link borrar text-white" [class.disabled]="!perfilSeleccionado" (click)="borrarPerfil()">
               Borrar Perfil
             </a>
           </li>
@@ -223,13 +219,117 @@
         <!-- Div para Actualizar Perfil -->
         <div class="row" *ngIf="mostrarActualizar">
           <!-- Contenido del div para Actualizar Perfil -->
-          <p>Aquí puedes actualizar un perfil.</p>
+          <h2>Actualizar perfil</h2>
+
+          <form (ngSubmit)="actualizarPerfil()">
+            <table class="table">
+              <thead>
+                <tr class="table-dark">
+                  <th scope="col" class="titulo_columna">
+                    <label for="nombre">Nombre</label>
+                  </th>
+                  <th scope="col" class="titulo_columna" [colSpan]="2">
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      [(ngModel)]="nuevoPerfil.nombre"
+                      required
+                    />
+                  </th>
+                </tr>
+
+                <tr class="table-dark">
+                  <th class="titulo_columna">
+                    <label for="edad">Edad</label>
+                  </th>
+                  <th [colSpan]="2">
+                    <input
+                      type="number"
+                      id="edad"
+                      name="edad"
+                      [(ngModel)]="nuevoPerfil.edad"
+                      required
+                    />
+                  </th>
+                </tr>
+                <tr class="table-dark">
+                  <th class="titulo_columna">
+                    <label for="genero">Género</label>
+                  </th>
+                  <th [colSpan]="2">
+                    <select
+                      id="genero"
+                      name="genero"
+                      [(ngModel)]="nuevoPerfil.genero"
+                      required
+                    >
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                      <!-- Puedes agregar más opciones según sea necesario -->
+                    </select>
+                  </th>
+                </tr>
+
+                <tr class="table-dark">
+                  <th scope="col" class="titulo_columna">Cualidades</th>
+                  <th scope="col" class="titulo_columna">Valor Minimo</th>
+                  <th scope="col" class="titulo_columna">Rango</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let cualidad of cualidades; let i = index"
+                  [ngClass]="{
+                    'table-primary': i === 0 || i === 7,
+                    'table-success': i === 1,
+                    'table-danger': i === 2,
+                    'table-warning': i === 3,
+                    'table-info': i === 4,
+                    'table-light': i === 5,
+                    'table-secondary': i === 6
+                  }"
+                >
+                  <th scope="row">
+                    <label
+                      for="{{ 'customRange' + cualidad.id }}"
+                      class="form-label"
+                      >{{ cualidad.nombre }}</label
+                    >
+                  </th>
+                  <td>
+                    <div id="{{ 'rangeValue' + cualidad.id }}">
+                      {{ cualidadesValores["valor" + cualidad.id] }}
+                    </div>
+                  </td>
+                  <td>
+                    <input
+                      type="range"
+                      class="form-range"
+                      [id]="'customRange' + cualidad.id"
+                      name="cualidad{{ i }}"
+                      min="0"
+                      max="100"
+                      step="0.5"
+                      [(ngModel)]="cualidadesValores['valor' + cualidad.id]"
+                      (input)="actualizarValorRango($event, cualidad.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">
+              Actualizar Perfil
+            </button>
+          </form>
         </div>
 
         <!-- Div para Borrar Perfil -->
         <div class="row" *ngIf="mostrarBorrar">
           <!-- Contenido del div para Borrar Perfil -->
           <p>Aquí puedes borrar un perfil.</p>
+          <button class="btn btn-danger" [disabled]="!perfilSeleccionado" (click)="borrarPerfil()">Borrar Perfil</button>
         </div>
       </div>
     </main>

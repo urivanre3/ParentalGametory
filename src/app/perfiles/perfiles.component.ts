@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfiles',
@@ -32,10 +33,12 @@ export class PerfilesComponent implements OnInit {
     // Agrega las otras cualidades aquí
   ];
 
+
   constructor(
     private api: ApiService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private router: Router
   ) {
 
 
@@ -117,12 +120,113 @@ export class PerfilesComponent implements OnInit {
     this.mostrarBorrar = false;
   }
 
-  mostrarActualizarPerfil() {
-    this.default = false;
-    this.mostrarAgregar = false;
-    this.mostrarActualizar = true;
-    this.mostrarBorrar = false;
+
+
+
+// Function to update a profile
+actualizarPerfil() {
+  if (!this.perfilAActualizar || !this.perfilAActualizar.PerfilObjetivoID) {
+    console.error('No profile selected for update.');
+    return;
   }
+
+  // Preparar los nuevos datos del perfil
+  const nuevosDatosPerfil = {
+    nombre: this.nuevoPerfil.nombre,
+    edad: this.nuevoPerfil.edad,
+    genero: this.nuevoPerfil.genero,
+  };
+
+  console.log('Datos del perfil a actualizar:', nuevosDatosPerfil);
+
+  this.api.actualizarPerfil(this.perfilAActualizar.PerfilObjetivoID, nuevosDatosPerfil)
+  .subscribe(() => {
+    console.log('Profile updated successfully.');
+    // Actualizar la lista de perfiles después de la actualización
+    this.actualizarListaPerfiles();
+    
+    // Obtener los nuevos datos de interés del formulario
+    const nuevosDatosInteres = {
+      valor1: this.cualidadesValores.valor1,
+      valor2: this.cualidadesValores.valor2,
+      valor3: this.cualidadesValores.valor3,
+      valor4: this.cualidadesValores.valor4,
+      valor5: this.cualidadesValores.valor5,
+      valor6: this.cualidadesValores.valor6,
+      valor7: this.cualidadesValores.valor7,
+      valor8: this.cualidadesValores.valor8,
+    };
+    console.log('Datos del interés a actualizar:', nuevosDatosInteres);
+    // Verificar que perfilAActualizar no sea nulo antes de llamar a actualizarInteres
+    if (this.perfilAActualizar && this.perfilAActualizar.PerfilObjetivoID) {
+      // Actualizar el interés asociado al perfil
+      this.api.actualizarInteres(this.perfilAActualizar.PerfilObjetivoID, nuevosDatosInteres)
+        .subscribe(() => {
+          console.log('Interest updated successfully.');
+        });
+    } else {
+      console.error('Error: perfilAActualizar es nulo o no tiene PerfilObjetivoID');
+    }
+    
+    // Resetear el perfil seleccionado
+    this.perfilSeleccionado = null;
+    this.perfilAActualizar = null;
+  });
+
+
+
+
+    
+}
+
+
+
+// Function to show the update profile form
+mostrarActualizarPerfil() {
+  this.default = false;
+  this.mostrarAgregar = false;
+  this.mostrarActualizar = true;
+  this.mostrarBorrar = false;
+
+  this.api.obtenerInteres(this.perfilSeleccionado.PerfilObjetivoID)
+  .subscribe((datosInteres: any[]) => {
+    console.log('Datos de interés obtenidos:', datosInteres);
+
+    // Verifica si hay datos de interés y toma el primer elemento (el objeto de cualidades)
+    const primerElemento = datosInteres.length > 0 ? datosInteres[0] : null;
+
+    // Set the profile to be updated
+    this.perfilAActualizar = this.perfilSeleccionado;
+
+    // Populate the form fields with the data of the selected profile
+    this.nuevoPerfil = {
+      usid_perfil: this.datosusuario.UsuarioID,
+      nombre: this.perfilAActualizar.NombreObjetivo,
+      edad: this.perfilAActualizar.EdadObjetivo,
+      genero: this.perfilAActualizar.GeneroObjetivo,
+    };
+
+    // Update the values for each quality
+    for (const cualidad of this.cualidades) {
+      const cualidadID = cualidad.id;
+      const valorKey = 'valor' + cualidadID;
+
+      // Accede al objeto de cualidades y luego obtén el valor por nombre
+      this.cualidadesValores[valorKey] = primerElemento ? parseFloat(primerElemento[cualidad.nombre]) : 0;
+    }
+  });
+}
+
+// Function to refresh the list of profiles
+actualizarListaPerfiles() {
+  this.api.buscarPerfiles(this.datosusuario.UsuarioID).subscribe((respuesta: any) => {
+    if (respuesta && respuesta.length > 0) {
+      this.perfiles = respuesta;
+    } else {
+      console.log('Este usuario no tiene perfiles vinculados.');
+    }
+  });
+}
 
   mostrarBorrarPerfil() {
     this.default = false;
@@ -183,12 +287,6 @@ export class PerfilesComponent implements OnInit {
     });
 
 
-
-
-
-   
-
-
   }
 
   // Función para actualizar el valor y el color del rango
@@ -212,6 +310,39 @@ export class PerfilesComponent implements OnInit {
       }
     }
   }
+
+
+
+  borrarPerfil() {
+    if (!this.perfilSeleccionado || !this.perfilSeleccionado.PerfilObjetivoID) {
+      console.error('No profile selected for deletion.');
+      return;
+    }
+  
+    const perfilId = this.perfilSeleccionado.PerfilObjetivoID;
+  
+    // Llama al método del servicio para borrar perfil e interés asociado
+    this.api.borrarPerfilEInteres(perfilId).subscribe(() => {
+      console.log('Profile and associated interest deleted successfully.');
+  
+      // Actualiza la lista de perfiles después del borrado
+      this.actualizarListaPerfiles();
+  
+      // Resetear el perfil seleccionado
+      this.perfilSeleccionado = null;
+      this.perfilAActualizar = null;
+    });
+
+        // Redirige a la página de perfiles
+        this.router.navigate(['/perfiles']);
+  }
+
+
+
+
+
+
+
 }
 
 interface CualidadesValores {
