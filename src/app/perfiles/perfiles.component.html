@@ -6,16 +6,16 @@
         class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
         style="width: 280px"
       >
-      <a
-      href="/home"
-      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
-    >
-      <svg class="bi pe-none me-2" width="40" height="32">
-        <use xlink:href="#bootstrap" />
-      </svg>
-      <span class="fs-4">Gametory</span>
-    </a>
-    <hr />
+        <a
+          href="/home"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+        >
+          <svg class="bi pe-none me-2" width="40" height="32">
+            <use xlink:href="#bootstrap" />
+          </svg>
+          <span class="fs-4">Gametory</span>
+        </a>
+        <hr />
         <a
           href="/perfiles"
           class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
@@ -85,16 +85,16 @@
       </div>
 
       <div class="b-example-divider b-example-vr"></div>
-
+      <div class="row animated fadeIn">
       <div class="container">
         <div
-          class="row"
+          class="row g-0"
           *ngIf="!(mostrarAgregar || mostrarActualizar || mostrarBorrar)"
         >
           Selecciona un perfil
         </div>
 
-        <div class="row" *ngIf="default">
+        <div class="row g-0" *ngIf="default">
           <div *ngFor="let perfil of perfiles" class="col-md-4">
             <div class="card mb-4 shadow-sm">
               <div class="card-body">
@@ -352,6 +352,7 @@
           </button>
         </div>
       </div>
+    </div>
     </main>
   </body>
 </html>

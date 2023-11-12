@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-perfiles',
   templateUrl: './perfiles.component.html',
@@ -295,7 +296,7 @@ export class PerfilesComponent implements OnInit {
   agregarPerfil() {
     // Aquí debes enviar los datos del nuevo perfil al servidor o realizar la lógica necesaria
     console.log('Datos del nuevo perfil:', this.nuevoPerfil);
-  
+    this.nuevoPerfil.usid_perfil = this.datosusuario.UsuarioID;
     const valoresTemp = {
       PerfilObjID: null,
       valor1: this.cualidadesValores.valor1,

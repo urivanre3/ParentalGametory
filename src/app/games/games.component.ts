@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Optional, ViewChild } from '@angular/core';
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -12,8 +12,11 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 export class GamesComponent implements OnInit {
 
   // View
-  @ViewChild('added')
-  public readonly added!: SwalComponent;
+  @ViewChild('added', { static: true }) public readonly added!: SwalComponent;
+  @ViewChild('customRange', { static: false }) customRange: ElementRef | undefined;
+
+  @ViewChild('rangeValue', { static: false }) rangeValue: ElementRef | undefined;
+  
 
   // Attributes
  /*  public readonly user: Observable<User | null> = EMPTY; */
@@ -31,10 +34,32 @@ export class GamesComponent implements OnInit {
 
 
 
+  cualidades = [
+    { id: 1, nombre: 'Humanidades y Emociones' },
+    { id: 2, nombre: 'Historica' },
+    { id: 3, nombre: 'Cultural' },
+    { id: 4, nombre: 'Aritmetica' },
+    { id: 5, nombre: 'Logica' },
+    { id: 6, nombre: 'Accesibilidad' },
+    { id: 7, nombre: 'Creatividad' },
+    { id: 8, nombre: 'Lectura y Lenguaje' },
+    // Agrega las otras cualidades aquí
+  ];
+
+  cualidadesValores: CualidadesValores = {
+    valor1: 0,
+    valor2: 0,
+    valor3: 0,
+    valor4: 0,
+    valor5: 0,
+    valor6: 0,
+    valor7: 0,
+    valor8: 0,
+    // Añade los valores iniciales para las otras cualidades según sea necesario
+  };
 
 
-
-  constructor( @Optional() /*private auth: Auth, */ private api: ApiService, private router: ActivatedRoute) {
+  constructor( @Optional() /*private auth: Auth, */ private api: ApiService, private router: ActivatedRoute, private el: ElementRef) {
     console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 
@@ -123,4 +148,43 @@ export class GamesComponent implements OnInit {
     }); */
     await this.added.fire();
   }
+
+
+  AgregarCalificacion(){
+
+
+  }
+
+  actualizarValorRango(event: any, idCualidad: number) {
+    const target = event.target as HTMLInputElement;
+    if (target && this.customRange) {
+      const valor = parseFloat(target.value);
+      if (!isNaN(valor)) {
+        this.cualidadesValores['valor' + idCualidad] = valor;
+        console.log("Prueba valores = ",this.cualidadesValores); // Imprime los valores en la consola
+        this.customRange.nativeElement.style.setProperty(
+          '--value',
+          (valor - parseFloat(this.customRange.nativeElement.min)) /
+            (parseFloat(this.customRange.nativeElement.max) - parseFloat(this.customRange.nativeElement.min))
+        );
+      }
+    }
+  }
+
+}
+
+
+
+
+interface CualidadesValores {
+  [key: string]: number;
+  valor1: number;
+  valor2: number;
+  valor3: number;
+  valor4: number;
+  valor5: number;
+  valor6: number;
+  valor7: number;
+  valor8: number;
+  // Agrega las propiedades para las otras cualidades según sea necesario
 }

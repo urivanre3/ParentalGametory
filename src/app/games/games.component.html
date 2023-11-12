@@ -1,57 +1,139 @@
-
-<div class="row animated fadeIn" >
-  <div class="container">
+<div class="row animated fadeIn">
+  <div class="contenedor_principal container">
     <div class="container1">
       <div class="container2">
         <div class="note-wrapper success-alert">
           <div class="alert">
             <h5 class="text-bold mb-15">Note:</h5>
             <p class="text-md text-black">
-              hello! Thank you for being a member of our website, you can scan
-              this QR code to see videos where the products we offer are used.
+              ¡Hola! Recuerda que puedes contribuir a la comunidad con tu
+              opinión sobre el videojuego y calificar sus características.
             </p>
           </div>
         </div>
-
-    
       </div>
 
-      <div class="card">
+      <div class="carta_principal card m-2">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="{{ juego.portadaURL }}" width="1fr" class="card-img-top" alt="error" />
+            <img
+              src="{{ juego.portadaURL }}"
+              width="1fr"
+              class="card-img-top"
+              alt="error"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ juego.NombreJuego }}</h5>
+              <p class="card-text">{{ juego.Descripcion }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Manufacturer: {{ juego.categoria }}
+              </li>
+              <li class="list-group-item">
+                Category: {{ juego.clasificacion }}
+              </li>
+              <li class="list-group-item">
+                SubCategory: {{ juego.puntuacion }}
+              </li>
+            </ul>
+
+            <div class="card-body" *ngIf="isUserAuthenticated()">
+              Contenido que deseas mostrar cuando el usuario esté autenticado
+              <!-- <input name="amount_input" [(ngModel)]="amount" #name="ngModel" type="number" class="form-control" min="1" max="99" required /> -->
+              <span class="validity">Pruebaaaa</span>
+              <!-- <button class="btn btn-success" *ngIf="!name.invalid" (click)="addProduct_tocart_byid(name.value)">
+                Add To Cart
+              </button> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="parteInferior row g-0 m-4">
+          <div class="calificaciones col-md-4 mt-8">
+            <h4>Cualidades y Valoración</h4>
+            <ul class="list-group">
+              <div class="d-flex flex-column justify-content-between">
+                <div *ngFor="let cualidad of cualidades; let i = index">
+                  <div class="row g-0">
+                    <li class="list-group-item border-primary rounded">
+                      <div class="row g-0">
+                        <div class="col-md-7">
+                          <label for="cualidad{{ i + 1 }}" class="form-label">{{
+                            cualidad.nombre
+                          }}</label>
+                        </div>
+                        <div class="col-md-5">
+                          <div id="{{ 'rangeValue' + cualidad.id }}">
+                            {{ cualidadesValores["valor" + cualidad.id] }}
+                          </div>
+                          <input
+                            type="range"
+                            class="form-range"
+                            #customRange
+                            [id]="'customRange' + cualidad.id"
+                            name="cualidad{{ i }}"
+                            min="0"
+                            max="100"
+                            step="0.5"
+                            [(ngModel)]="
+                              cualidadesValores['valor' + cualidad.id]
+                            "
+                            (input)="actualizarValorRango($event, cualidad.id)"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </div>
+                </div>
+              </div>
+            </ul>
           </div>
 
-          <div class="card-body">
-            <h5 class="card-title">{{ juego.NombreJuego }}</h5>
-            <p class="card-text">{{ juego.Descripcion }}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Manufacturer: {{ juego.categoria }}
-            </li>
-            <li class="list-group-item">Category: {{ juego.clasificacion }}</li>
-            <li class="list-group-item">
-              SubCategory: {{ juego.puntuacion }}
-            </li>
-        <!--     <li class="list-group-item">Contents: {{ videogame.contents }}</li> -->
-          
-          </ul>
-
-          <div class="card-body" *ngIf="isUserAuthenticated()">
-            Contenido que deseas mostrar cuando el usuario esté autenticado
-         
-           <!--  <input name="amount_input" [(ngModel)]="amount" #name="ngModel" type="number" class="form-control" min="1"
-              max="99" required /> -->
-            <span class="validity">Pruebaaaa</span>
-           <!--  <button class="btn btn-success" *ngIf="!name.invalid" (click)="addProduct_tocart_byid(name.value)">
-              Add To Cart
-            </button> -->
+          <div class="comentarios col-md-8">
+            <h4>Comentarios</h4>
+            <ul class="list-group">
+              <div class="d-flex flex-column justify-content-between">
+                <!-- <div *ngFor="let cualidad of cualidades; let i = index">
+                  <div class="row g-0">
+                    <li class="list-group-item border-primary rounded">
+                      <div class="row g-0">
+                        <div class="col-md-7">
+                          <label for="cualidad{{ i + 1 }}" class="form-label">{{
+                            cualidad.nombre
+                          }}</label>
+                        </div>
+                        <div class="col-md-5">
+                          <div id="{{ 'rangeValue' + cualidad.id }}">
+                            {{ cualidadesValores["valor" + cualidad.id] }}
+                          </div>
+                          <input
+                            type="range"
+                            class="form-range"
+                            #customRange
+                            [id]="'customRange' + cualidad.id"
+                            name="cualidad{{ i }}"
+                            min="0"
+                            max="100"
+                            step="0.5"
+                            [(ngModel)]="
+                              cualidadesValores['valor' + cualidad.id]
+                            "
+                            (input)="actualizarValorRango($event, cualidad.id)"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </div>
+                </div> -->
+              </div>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <!-- <swal #added title="Added to cart" text="The videogame was added to your cart" icon="success"></swal> -->

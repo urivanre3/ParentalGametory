@@ -26,6 +26,7 @@ import { HeaderComponent } from './admin/header/header.component';
 import { PagetitleComponent } from './admin/pagetitle/pagetitle.component'; 
 import { RouterModule } from '@angular/router';
 import { PerfilesComponent } from './perfiles/perfiles.component';
+import { GamesComponent } from './games/games.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +44,7 @@ import { PerfilesComponent } from './perfiles/perfiles.component';
     HeaderComponent,
     PagetitleComponent,
     PerfilesComponent,
+    GamesComponent
     
     
   ],
