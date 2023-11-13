@@ -55,6 +55,8 @@
           <div class="calificaciones col-md-4 mt-8">
             <h4>Cualidades y Valoración</h4>
             <ul class="list-group">
+
+              <form (ngSubmit)="actualizarCalificacion()">
               <div class="d-flex flex-column justify-content-between">
                 <div *ngFor="let cualidad of cualidades; let i = index">
                   <div class="row g-0">
@@ -89,6 +91,12 @@
                   </div>
                 </div>
               </div>
+
+              <button type="submit" class="btn btn-primary">
+                Calificar
+              </button>
+            </form>
+
             </ul>
           </div>
 

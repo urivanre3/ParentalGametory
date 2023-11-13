@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, Optional, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Optional,
+  ViewChild,
+} from '@angular/core';
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -7,32 +13,32 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 @Component({
   selector: 'app-games',
   templateUrl: './games.component.html',
-  styleUrls: ['./games.component.css']
+  styleUrls: ['./games.component.css'],
 })
 export class GamesComponent implements OnInit {
-
   // View
   @ViewChild('added', { static: true }) public readonly added!: SwalComponent;
-  @ViewChild('customRange', { static: false }) customRange: ElementRef | undefined;
+  @ViewChild('customRange', { static: false }) customRange:
+    | ElementRef
+    | undefined;
 
-  @ViewChild('rangeValue', { static: false }) rangeValue: ElementRef | undefined;
-  
+  @ViewChild('rangeValue', { static: false }) rangeValue:
+    | ElementRef
+    | undefined;
 
   // Attributes
- /*  public readonly user: Observable<User | null> = EMPTY; */
- public readonly user: Observable<any | null> = EMPTY;
+  /*  public readonly user: Observable<User | null> = EMPTY; */
+  public readonly user: Observable<any | null> = EMPTY;
   loggedIn: Observable<boolean> = new Observable<boolean>();
-  key : string ='session'
+  key: string = 'session';
   idprueba!: number;
-
+  userIduserId: any = null;
   //producto a imprimir
   juego: any = {};
   //cantidad a comprar
   amount: number = 0;
 
   loadingProduct: boolean;
-
-
 
   cualidades = [
     { id: 1, nombre: 'Humanidades y Emociones' },
@@ -57,29 +63,60 @@ export class GamesComponent implements OnInit {
     valor8: 0,
     // Añade los valores iniciales para las otras cualidades según sea necesario
   };
+  juegoId: any;
 
-
-  constructor( @Optional() /*private auth: Auth, */ private api: ApiService, private router: ActivatedRoute, private el: ElementRef) {
+  constructor(
+    @Optional() /*private auth: Auth, */ private api: ApiService,
+    private router: ActivatedRoute,
+    private el: ElementRef
+  ) {
     console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 
-
     this.router.params.subscribe((params) => {
       this.datos_del_juego(params['id']);
-      //prueba en consola
-      console.log('llego ' + params['id']);
+      this.juegoId = params['id'];
+      console.log('llego ' + this.juegoId);
     });
-      
-    // Auth
- /*    if (auth) {
-      this.user = authState(this.auth);
-    } */
- 
+
+    this.api.getUserData().subscribe(
+      (userData) => {
+        // Verifica si userData contiene el ID del usuario
+        if (userData && userData.UsuarioID) {
+          this.userIduserId = userData.UsuarioID;
+    
+          // Obtén las calificaciones para el usuario y el juego específicos
+          this.api
+            .obtenerCalificaciones(this.userIduserId, this.juegoId)
+            .subscribe((calificaciones: any[]) => {
+              console.log('Datos de calificaciones obtenidos:', calificaciones);
+    
+              // Verifica si hay datos de interés y toma el primer elemento (el objeto de calificaciones)
+              const primerElemento = calificaciones.length > 0 ? calificaciones[0] : null;
+    
+              // Update the values for each quality
+              for (const cualidad of this.cualidades) {
+                const cualidadID = cualidad.id;
+                const valorKey = 'valor' + cualidadID;
+    
+                // Accede al objeto de calificaciones y luego obtén el valor por nombre
+                this.cualidadesValores[valorKey] = primerElemento
+                  ? parseFloat(primerElemento[cualidad.nombre])
+                  : 0;
+              }
+            });
+        } else {
+          console.error('ID del usuario no encontrado en los datos del usuario.');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener datos del usuario', error);
+      }
+    );
   }
 
-
   isUserAuthenticated(): boolean {
-    const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
+    /*     const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
   
     if (token) {
       // Si hay un token en el localStorage, verifiquemos si ha expirado o no.
@@ -104,10 +141,9 @@ export class GamesComponent implements OnInit {
   
     // Si no hay token, si ha expirado o cualquier otro caso, retornamos false.
 
-    console.log(" GAMES.TS  NO AUTENTIFICADO");
+    console.log(" GAMES.TS  NO AUTENTIFICADO"); */
     return false;
   }
-
 
   ngOnInit(): void {
     console.log('pagina de juegos');
@@ -124,16 +160,14 @@ export class GamesComponent implements OnInit {
       console.log('Games getjuego_por_id = ' + this.juego.JuegoID);
       console.log('nombre de juego = ' + this.juego.NombreJuego);
 
-
       this.loadingProduct = true;
     });
   }
 
-
   //añadir productos al carrito
   async addProduct_tocart_byid(amounts: number) {
     // Get cart
-/*     this.api.getVideogameList(this.auth.currentUser?.uid ?? '').subscribe((cart: any) => {
+    /*     this.api.getVideogameList(this.auth.currentUser?.uid ?? '').subscribe((cart: any) => {
       if (cart) {
         cart.videogames.push({
           'videogame': this.videogame.id,
@@ -149,10 +183,35 @@ export class GamesComponent implements OnInit {
     await this.added.fire();
   }
 
+  actualizarCalificacion() {
+    // Asegúrate de que this.userIduserId, this.cualidadesValores y this.juegoId estén definidos
+    if (this.userIduserId && this.cualidadesValores && this.juegoId) {
+      // Imprimir datos antes de la llamada al método de la API
+      console.log('ID del usuario:', this.userIduserId);
+      console.log('ID del juego:', this.juegoId);
+      console.log('Valores de cualidades:', this.cualidadesValores);
 
-  AgregarCalificacion(){
-
-
+      // Llama a la función de actualización de calificación en ApiService
+      this.api
+        .actualizarCalificacion(this.userIduserId, {
+          ...this.cualidadesValores,
+          JuegoID: this.juegoId, // Asegúrate de incluir el ID del juego en los datos de calificación
+        })
+        .subscribe(
+          (response) => {
+            // Manejar la respuesta exitosa si es necesario
+            console.log('Calificación actualizada con éxito', response);
+          },
+          (error) => {
+            // Manejar el error si es necesario
+            console.error('Error al actualizar la calificación', error);
+          }
+        );
+    } else {
+      console.error(
+        'ID del usuario, ID del juego o valores de cualidades no disponibles.'
+      );
+    }
   }
 
   actualizarValorRango(event: any, idCualidad: number) {
@@ -161,20 +220,17 @@ export class GamesComponent implements OnInit {
       const valor = parseFloat(target.value);
       if (!isNaN(valor)) {
         this.cualidadesValores['valor' + idCualidad] = valor;
-        console.log("Prueba valores = ",this.cualidadesValores); // Imprime los valores en la consola
+        console.log('Prueba valores = ', this.cualidadesValores); // Imprime los valores en la consola
         this.customRange.nativeElement.style.setProperty(
           '--value',
           (valor - parseFloat(this.customRange.nativeElement.min)) /
-            (parseFloat(this.customRange.nativeElement.max) - parseFloat(this.customRange.nativeElement.min))
+            (parseFloat(this.customRange.nativeElement.max) -
+              parseFloat(this.customRange.nativeElement.min))
         );
       }
     }
   }
-
 }
-
-
-
 
 interface CualidadesValores {
   [key: string]: number;

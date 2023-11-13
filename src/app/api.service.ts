@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, map, mergeMap, of, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -165,23 +165,25 @@ export class ApiService {
   obtenerUltimoPerfil(userId: string): Observable<any> {
     const url = `${this.apiUrl}/obtenerUltimoPerfil/${userId}`;
     const token = this.getToken();
-  
+
     if (!token) {
       // Manejar la ausencia de token según tus necesidades
       return throwError('No se proporcionó un token.');
     }
-  
-    return this._http.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).pipe(
-      catchError(error => {
-        // Manejar errores aquí
-        console.error('Error en la solicitud obtenerUltimoPerfil:', error);
-        return throwError('Error en la solicitud obtenerUltimoPerfil.');
+
+    return this._http
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-    );
+      .pipe(
+        catchError((error) => {
+          // Manejar errores aquí
+          console.error('Error en la solicitud obtenerUltimoPerfil:', error);
+          return throwError('Error en la solicitud obtenerUltimoPerfil.');
+        })
+      );
   }
   /////////Videojuegos//////
 
@@ -194,6 +196,55 @@ export class ApiService {
   getjuego_por_id(id: string): Observable<any> {
     return this._http.get(`${this.apiUrl}/juego/${id}`);
   }
+
+  /////////calificaciones///////////////
+
+  // Método para actualizar calificaciones
+  actualizarCalificacion(
+    userId: string,
+    nuevosDatosCalificacion: any
+  ): Observable<any> {
+    const juegoId =
+      nuevosDatosCalificacion && nuevosDatosCalificacion.JuegoID
+        ? nuevosDatosCalificacion.JuegoID
+        : '';
+
+    // Verificar si el juegoId está definido
+    if (!juegoId) {
+      return throwError('ID del juego no proporcionado');
+    }
+
+    // Verificar y reemplazar valores nulos con un valor predeterminado
+    Object.keys(nuevosDatosCalificacion).forEach((key) => {
+      if (nuevosDatosCalificacion[key] === null) {
+        nuevosDatosCalificacion[key] = 'valor_predeterminado'; // Cambia esto según tus necesidades
+      }
+    });
+
+    const url = `${this.apiUrl}/actualizarCalificacion/${userId}`;
+
+    // Configura los encabezados de la solicitud con el token de autenticación
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+
+    // Realiza una solicitud para actualizar la calificación
+    return this._http.put(url, nuevosDatosCalificacion, { headers });
+  } 
+
+  obtenerCalificaciones(userId: string, juegoId: string): Observable<any> {
+    const url = `${this.apiUrl}/obtenerCalificaciones/${userId}/${juegoId}`;
+  
+    return this._http.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    });
+  }
+
+
+
+
 }
 
 export interface Videojuego {
