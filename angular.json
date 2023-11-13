@@ -108,5 +108,8 @@
       }
     }
   },
-  "defaultProject": "ParentalGametory"
+  "defaultProject": "ParentalGametory",
+  "cli": {
+    "analytics": false
+  }
 }

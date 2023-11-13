@@ -15,7 +15,7 @@ import { CardComponent } from './card/card.component';
 import { SignupComponent } from './signup/signup.component';
 import { VideogamesComponent } from './admin/videogames/videogames.component';
 import { SigninComponent } from './admin/signin/signin.component';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 import { LoginComponent } from './login/login.component';
 
 // Providers
@@ -55,8 +55,7 @@ import { GamesComponent } from './games/games.component';
     HttpClientModule,
     FormsModule,
     CommonModule,
-    ReactiveFormsModule,
-    SweetAlert2Module.forRoot()
+    ReactiveFormsModule
   ],
   providers: [
      // JWT

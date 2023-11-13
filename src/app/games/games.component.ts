@@ -8,7 +8,7 @@ import {
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+
 
 @Component({
   selector: 'app-games',
@@ -17,7 +17,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 })
 export class GamesComponent implements OnInit {
   // View
-  @ViewChild('added', { static: true }) public readonly added!: SwalComponent;
+
   @ViewChild('customRange', { static: false }) customRange:
     | ElementRef
     | undefined;
@@ -180,7 +180,7 @@ export class GamesComponent implements OnInit {
         });
       }
     }); */
-    await this.added.fire();
+
   }
 
   actualizarCalificacion() {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+
 import { Subscription } from 'rxjs';
 import { ApiService } from '../api.service';
 declare var window: any;
@@ -13,7 +13,7 @@ declare var window: any;
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('wrongData')
-  public readonly wrongData!: SwalComponent;
+
   modal: any;
 
   aux = { email: '', password: '' };

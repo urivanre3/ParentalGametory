@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core
 import { traceUntilFirst } from '@angular/fire/performance'; */
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+
 import { EMPTY, map, Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ export class SigninComponent implements OnInit {
 
   // View
   @ViewChild('wrongData')
-  public readonly wrongData!: SwalComponent;
+
 
   // Attributes
   private readonly userDisposable: Subscription | undefined;
