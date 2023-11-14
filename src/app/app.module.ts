@@ -27,6 +27,7 @@ import { PagetitleComponent } from './admin/pagetitle/pagetitle.component';
 import { RouterModule } from '@angular/router';
 import { PerfilesComponent } from './perfiles/perfiles.component';
 import { GamesComponent } from './games/games.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +56,8 @@ import { GamesComponent } from './games/games.component';
     HttpClientModule,
     FormsModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
   providers: [
      // JWT

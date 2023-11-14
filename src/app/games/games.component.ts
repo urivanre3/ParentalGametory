@@ -8,7 +8,7 @@ import {
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-games',
@@ -25,6 +25,10 @@ export class GamesComponent implements OnInit {
   @ViewChild('rangeValue', { static: false }) rangeValue:
     | ElementRef
     | undefined;
+
+    public myChart: Chart | null = null;
+
+
 
   // Attributes
   /*  public readonly user: Observable<User | null> = EMPTY; */
@@ -64,6 +68,48 @@ export class GamesComponent implements OnInit {
     // Añade los valores iniciales para las otras cualidades según sea necesario
   };
   juegoId: any;
+
+
+  createChart(): void {
+    const ctx = this.customRange?.nativeElement.getContext('2d');
+    if (ctx) {
+      this.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          datasets: [{
+            label: 'My First Dataset',
+            data: [65, 59, 80, 81, 56, 55, 40],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)',
+            ],
+            borderWidth: 1,
+          }],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+    }
+  }
+
+
+
 
   constructor(
     @Optional() /*private auth: Auth, */ private api: ApiService,
@@ -147,6 +193,8 @@ export class GamesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('pagina de juegos');
+
+    this.createChart();
   }
 
   //metodo que busca productos
