@@ -27,7 +27,9 @@ import { PagetitleComponent } from './admin/pagetitle/pagetitle.component';
 import { RouterModule } from '@angular/router';
 import { PerfilesComponent } from './perfiles/perfiles.component';
 import { GamesComponent } from './games/games.component';
-import { NgChartsModule } from 'ng2-charts';
+/* import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; */
+/* import { NgChartsModule } from 'ng2-charts'; */
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +59,9 @@ import { NgChartsModule } from 'ng2-charts';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    NgChartsModule
+/*     NgxChartsModule,
+    BrowserAnimationsModule */
+   /*  NgChartsModule, */
   ],
   providers: [
      // JWT

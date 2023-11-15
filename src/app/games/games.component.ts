@@ -8,7 +8,8 @@ import {
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import Chart from 'chart.js/auto';
+/* import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
+import { ChartDataset } from 'chart.js'; */
 
 @Component({
   selector: 'app-games',
@@ -25,10 +26,6 @@ export class GamesComponent implements OnInit {
   @ViewChild('rangeValue', { static: false }) rangeValue:
     | ElementRef
     | undefined;
-
-    public myChart: Chart | null = null;
-
-
 
   // Attributes
   /*  public readonly user: Observable<User | null> = EMPTY; */
@@ -69,48 +66,6 @@ export class GamesComponent implements OnInit {
   };
   juegoId: any;
 
-
-  createChart(): void {
-    const ctx = this.customRange?.nativeElement.getContext('2d');
-    if (ctx) {
-      this.myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)',
-            ],
-            borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)',
-            ],
-            borderWidth: 1,
-          }],
-        },
-        options: {
-          responsive: true,
-        },
-      });
-    }
-  }
-
-
-
-
   constructor(
     @Optional() /*private auth: Auth, */ private api: ApiService,
     private router: ActivatedRoute,
@@ -123,6 +78,18 @@ export class GamesComponent implements OnInit {
       this.datos_del_juego(params['id']);
       this.juegoId = params['id'];
       console.log('llego ' + this.juegoId);
+
+      
+this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
+  (calificacionesGlobales) => {
+    console.log('Calificaciones globales:', calificacionesGlobales);
+    this.calificacionesGlobales = calificacionesGlobales;
+    this.actualizarDatosGrafica();
+  },
+  (error) => {
+    console.error('Error al obtener las calificaciones globales:', error);
+  }
+);
     });
 
     this.api.getUserData().subscribe(
@@ -130,29 +97,33 @@ export class GamesComponent implements OnInit {
         // Verifica si userData contiene el ID del usuario
         if (userData && userData.UsuarioID) {
           this.userIduserId = userData.UsuarioID;
-    
+
           // Obtén las calificaciones para el usuario y el juego específicos
           this.api
             .obtenerCalificaciones(this.userIduserId, this.juegoId)
             .subscribe((calificaciones: any[]) => {
               console.log('Datos de calificaciones obtenidos:', calificaciones);
-    
+
               // Verifica si hay datos de interés y toma el primer elemento (el objeto de calificaciones)
-              const primerElemento = calificaciones.length > 0 ? calificaciones[0] : null;
-    
+              const primerElemento =
+                calificaciones.length > 0 ? calificaciones[0] : null;
+
               // Update the values for each quality
               for (const cualidad of this.cualidades) {
                 const cualidadID = cualidad.id;
                 const valorKey = 'valor' + cualidadID;
-    
+
                 // Accede al objeto de calificaciones y luego obtén el valor por nombre
                 this.cualidadesValores[valorKey] = primerElemento
                   ? parseFloat(primerElemento[cualidad.nombre])
                   : 0;
               }
+              /* this.barChartData = [{ data: [], label: 'Calificaciones Globales' }]; */
             });
         } else {
-          console.error('ID del usuario no encontrado en los datos del usuario.');
+          console.error(
+            'ID del usuario no encontrado en los datos del usuario.'
+          );
         }
       },
       (error) => {
@@ -161,6 +132,49 @@ export class GamesComponent implements OnInit {
     );
   }
 
+  calificacionesGlobales: any[] = []; 
+  @ViewChild('div_Grafica', { static: false }) divGrafica!: ElementRef;
+  
+
+  ngAfterViewInit() {
+    this.actualizarDatosGrafica();
+  }
+  
+  
+  actualizarDatosGrafica() {
+    // Lógica para obtener y procesar los datos de calificaciones globales
+  
+    // Verifica que divGrafica y su propiedad nativeElement estén definidos
+    if (this.divGrafica && this.divGrafica.nativeElement) {
+      // Limpia el contenido actual del contenedor
+      this.divGrafica.nativeElement.innerHTML = '';
+  
+      // Itera sobre los datos y crea barras
+      this.calificacionesGlobales.forEach((calificacion) => {
+        const barContainer = document.createElement('div');
+        barContainer.classList.add('bar-container');
+  
+        Object.keys(calificacion).forEach((cualidad) => {
+          if (cualidad !== 'calificacionglobalID' && cualidad !== 'JuegoID') {
+            const barLabel = document.createElement('div');
+            barLabel.innerText = cualidad;
+            barLabel.classList.add('bar-label');
+  
+            const bar = document.createElement('div');
+            bar.style.width = calificacion[cualidad] + '%';
+            bar.classList.add('bar');
+  
+            barContainer.appendChild(barLabel);
+            barContainer.appendChild(bar);
+          }
+        });
+  
+        this.divGrafica.nativeElement.appendChild(barContainer);
+      });
+    } else {
+      console.error('divGrafica o nativeElement no están definidos.');
+    }
+  }
   isUserAuthenticated(): boolean {
     /*     const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
   
@@ -194,7 +208,7 @@ export class GamesComponent implements OnInit {
   ngOnInit(): void {
     console.log('pagina de juegos');
 
-    this.createChart();
+    /*     this.createChart(); */
   }
 
   //metodo que busca productos
@@ -228,7 +242,6 @@ export class GamesComponent implements OnInit {
         });
       }
     }); */
-
   }
 
   actualizarCalificacion() {

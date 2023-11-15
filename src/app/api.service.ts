@@ -243,7 +243,22 @@ export class ApiService {
   }
 
 
+  
+  //////////// CALIFICACIONES GLOBALES ///////////////
 
+  obtenerCalificacionGlobal(juegoId: string): Observable<any> {
+    const url = `${this.apiUrl}/obtenerCalificacionGlobal/${juegoId}`;
+  
+    // Configura los encabezados de la solicitud con el token de autenticación si es necesario
+    const headers = this.getToken()
+      ? new HttpHeaders({
+          Authorization: `Bearer ${this.getToken()}`,
+        })
+      : undefined;  // Cambiado de null a undefined
+  
+    // Realiza una solicitud para obtener las calificaciones globales
+    return this._http.get(url, { headers });
+  }
 
 }
 
