@@ -260,7 +260,36 @@ export class ApiService {
     return this._http.get(url, { headers });
   }
 
+
+
+
+
+// Método para obtener recomendaciones de juegos basadas en intereses de perfil objetivo
+obtenerRecomendaciones(perfilId: string): Observable<any> {
+  const url = `${this.apiUrl}/recomendarJuegos/${perfilId}`;
+
+  // Configura los encabezados de la solicitud con el token de autenticación si es necesario
+  const headers = this.getToken()
+    ? new HttpHeaders({
+        Authorization: `Bearer ${this.getToken()}`,
+      })
+    : undefined;
+
+  // Realiza una solicitud para obtener las recomendaciones de juegos
+  return this._http.get(url, { headers });
 }
+
+
+
+
+
+
+
+}
+
+
+
+
 
 export interface Videojuego {
   titulo?: string;

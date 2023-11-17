@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   private userSubscription: Subscription | undefined; // Para gestionar la suscripción
   loggedIn = false; // Cambiado a un valor booleano
   datosusuario: any = null;
+  intereses: any = null;
 
   constructor(private api: ApiService) {
     this.flag_search = false;
@@ -39,26 +40,26 @@ export class HomeComponent implements OnInit {
                 const ultimoPerfil = response.UltimoPerfil;
                 console.log('Último perfil seleccionado:', ultimoPerfil);
 
-
                 this.api.obtenerInteres(ultimoPerfil).subscribe(
-                  (intereses) => {
-                    console.log('Datos de interés asociados al último perfil:', intereses);
+                  (datosintereses) => {
 
-
-
-
+                    this.intereses=datosintereses[0];
+                    console.log(
+                      'Datos de interés asociados al último perfil:',
+                      this.intereses
+                    );
+                    console.log(
+                      'último perfil:',
+                      this.intereses.PerfilObjetivoID
+                    );
+                    this.llamarRecomendacionAutomatica();
 
                     //aqui se realiza la recomendacion automatica inteligente
-
-
-
                   },
                   (error) => {
                     console.error('Error al obtener los intereses:', error);
                   }
                 );
-
-
               },
               (error) => {
                 console.error('Error al obtener el último perfil:', error);
@@ -68,6 +69,7 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
 
   flag_search?: boolean;
 
@@ -79,5 +81,21 @@ export class HomeComponent implements OnInit {
     } else {
       this.flag_search = false;
     }
+  }
+
+
+
+  // Método para llamar a la recomendación automática después de obtener los intereses
+  llamarRecomendacionAutomatica() {
+    this.api.obtenerRecomendaciones(this.intereses.PerfilObjetivoID).subscribe(
+      (recomendaciones) => {
+        console.log('Recomendaciones de juegos:', recomendaciones);
+        // Realiza acciones adicionales si es necesario
+      },
+      (error) => {
+        console.error('Error al obtener las recomendaciones de juegos', error);
+        // Maneja el error de manera apropiada
+      }
+    );
   }
 }

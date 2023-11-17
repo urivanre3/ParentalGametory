@@ -175,6 +175,13 @@ this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
       console.error('divGrafica o nativeElement no están definidos.');
     }
   }
+
+  
+
+
+
+
+
   isUserAuthenticated(): boolean {
     /*     const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
   

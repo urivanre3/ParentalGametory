@@ -29,33 +29,6 @@
               <p class="card-text">{{ juego.Descripcion }}</p>
             </div>
 
-            <!--<ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            Manufacturer: {{ juego.categoria }}
-                          </li>
-                          <li class="list-group-item">
-                            Category: {{ juego.clasificacion }}
-                          </li>
-                          <li class="list-group-item">
-                            SubCategory: {{ juego.puntuacion }}
-                          </li>
-                        </ul> -->
-                        <div *ngIf="calificacionesGlobales.length > 0" class="div_Grafica" id="div_Grafica" #div_Grafica>
-                          <div class="bar-container">
-                            <div *ngFor="let cualidad of cualidades" class="bar-container">
-                              <div class="row g-0">
-                                <div class="bar-label col-md-4">{{ cualidad.nombre }}</div>
-                                <div class="bar col-md-8">
-                                  <div class="percentage">{{ cualidadesValores["valor" + cualidad.id] }}%</div>
-                                  <div class="bar-inner" [style.width.%]="cualidadesValores['valor' + cualidad.id]">
-                                 
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
             <div class="card-body" *ngIf="isUserAuthenticated()">
               Contenido que deseas mostrar cuando el usuario esté autenticado
               <!-- <input name="amount_input" [(ngModel)]="amount" #name="ngModel" type="number" class="form-control" min="1" max="99" required /> -->
@@ -63,6 +36,32 @@
               <!-- <button class="btn btn-success" *ngIf="!name.invalid" (click)="addProduct_tocart_byid(name.value)">
                 Add To Cart
               </button> -->
+            </div>
+          </div>
+        </div>
+        <div *ngIf="calificacionesGlobales.length > 0" class="div_Grafica" id="div_Grafica" #div_Grafica>
+          <div class="row g-0">
+            <div class="col-md-12">
+              <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
+                <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
+                <div class="col-md-2 me-3">{{ cualidadesValores["valor" + cualidad.id] }}%</div>
+                <div class="progress flex-grow-1" style="height: 25px;">
+                  <div
+                    class="progress-bar text-dark"
+                    [class.bg-success]="cualidadesValores['valor' + cualidad.id] >= 75"
+                    [class.bg-info]="cualidadesValores['valor' + cualidad.id] >= 50 && cualidadesValores['valor' + cualidad.id] < 75"
+                    [class.bg-warning]="cualidadesValores['valor' + cualidad.id] >= 25 && cualidadesValores['valor' + cualidad.id] < 50"
+                    [class.bg-danger]="cualidadesValores['valor' + cualidad.id] < 25"
+                    role="progressbar"
+                    [style.width.%]="cualidadesValores['valor' + cualidad.id]"
+                    [attr.aria-valuenow]="cualidadesValores['valor' + cualidad.id]"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {{ cualidadesValores["valor" + cualidad.id] }}%
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
