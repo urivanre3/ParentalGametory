@@ -44,21 +44,21 @@
             <div class="col-md-12">
               <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
                 <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
-                <div class="col-md-2 me-3">{{ cualidadesValores["valor" + cualidad.id] }}%</div>
+                <div class="col-md-2 me-3">{{ obtenerValorCualidad(cualidad) }}%</div>
                 <div class="progress flex-grow-1" style="height: 25px;">
                   <div
                     class="progress-bar text-dark"
-                    [class.bg-success]="cualidadesValores['valor' + cualidad.id] >= 75"
-                    [class.bg-info]="cualidadesValores['valor' + cualidad.id] >= 50 && cualidadesValores['valor' + cualidad.id] < 75"
-                    [class.bg-warning]="cualidadesValores['valor' + cualidad.id] >= 25 && cualidadesValores['valor' + cualidad.id] < 50"
-                    [class.bg-danger]="cualidadesValores['valor' + cualidad.id] < 25"
+                    [class.bg-success]="obtenerValorCualidad(cualidad) >= 75"
+                    [class.bg-info]="obtenerValorCualidad(cualidad) >= 50 && obtenerValorCualidad(cualidad) < 75"
+                    [class.bg-warning]="obtenerValorCualidad(cualidad) >= 25 && obtenerValorCualidad(cualidad) < 50"
+                    [class.bg-danger]="obtenerValorCualidad(cualidad) < 25"
                     role="progressbar"
-                    [style.width.%]="cualidadesValores['valor' + cualidad.id]"
-                    [attr.aria-valuenow]="cualidadesValores['valor' + cualidad.id]"
+                    [style.width.%]="obtenerValorCualidad(cualidad)"
+                    [attr.aria-valuenow]="obtenerValorCualidad(cualidad)"
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    {{ cualidadesValores["valor" + cualidad.id] }}%
+                    {{ obtenerValorCualidad(cualidad) }}%
                   </div>
                 </div>
               </div>

@@ -71,6 +71,7 @@ export class GamesComponent implements OnInit {
     private router: ActivatedRoute,
     private el: ElementRef
   ) {
+
     console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 
@@ -79,17 +80,17 @@ export class GamesComponent implements OnInit {
       this.juegoId = params['id'];
       console.log('llego ' + this.juegoId);
 
+      this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
+        (calificacionesGlobales) => {
+          console.log('Calificaciones globales:', calificacionesGlobales);
+          this.calificacionesGlobales = calificacionesGlobales;
+          this.actualizarDatosGrafica();
+        },
+        (error) => {
+          console.error('Error al obtener las calificaciones globales:', error);
+        }
+      );
       
-this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
-  (calificacionesGlobales) => {
-    console.log('Calificaciones globales:', calificacionesGlobales);
-    this.calificacionesGlobales = calificacionesGlobales;
-    this.actualizarDatosGrafica();
-  },
-  (error) => {
-    console.error('Error al obtener las calificaciones globales:', error);
-  }
-);
     });
 
     this.api.getUserData().subscribe(
@@ -130,57 +131,50 @@ this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
         console.error('Error al obtener datos del usuario', error);
       }
     );
+
   }
 
-  calificacionesGlobales: any[] = []; 
+  calificacionesGlobales: any[] = [];
   @ViewChild('div_Grafica', { static: false }) divGrafica!: ElementRef;
-  
 
   ngAfterViewInit() {
-    this.actualizarDatosGrafica();
+/*     this.actualizarDatosGrafica(); */
   }
-  
-  
+
   actualizarDatosGrafica() {
     // Lógica para obtener y procesar los datos de calificaciones globales
-  
+
     // Verifica que divGrafica y su propiedad nativeElement estén definidos
     if (this.divGrafica && this.divGrafica.nativeElement) {
       // Limpia el contenido actual del contenedor
       this.divGrafica.nativeElement.innerHTML = '';
-  
+
       // Itera sobre los datos y crea barras
       this.calificacionesGlobales.forEach((calificacion) => {
         const barContainer = document.createElement('div');
         barContainer.classList.add('bar-container');
-  
+
         Object.keys(calificacion).forEach((cualidad) => {
           if (cualidad !== 'calificacionglobalID' && cualidad !== 'JuegoID') {
             const barLabel = document.createElement('div');
             barLabel.innerText = cualidad;
             barLabel.classList.add('bar-label');
-  
+
             const bar = document.createElement('div');
             bar.style.width = calificacion[cualidad] + '%';
             bar.classList.add('bar');
-  
+
             barContainer.appendChild(barLabel);
             barContainer.appendChild(bar);
           }
         });
-  
+
         this.divGrafica.nativeElement.appendChild(barContainer);
       });
     } else {
       console.error('divGrafica o nativeElement no están definidos.');
     }
   }
-
-  
-
-
-
-
 
   isUserAuthenticated(): boolean {
     /*     const token = localStorage.getItem('token'); // Reemplaza 'token' con el nombre correcto de tu clave en el localStorage.
@@ -297,6 +291,17 @@ this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
         );
       }
     }
+  }
+
+
+  obtenerValorCualidad(cualidad: any): number {
+    const calificacionGlobal = this.calificacionesGlobales[0]; // Supongo que solo hay un objeto en calificacionesGlobales
+  
+    if (calificacionGlobal) {
+      return calificacionGlobal[cualidad.nombre] || 0;
+    }
+  
+    return 0;
   }
 }
 

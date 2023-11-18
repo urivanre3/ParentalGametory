@@ -1,3 +1,8 @@
 <app-search (messageEvent)="receiveMessage($event)"></app-search>
 
-
+<!-- Combine the arrays into a single array with additional property -->
+<app-card
+  *ngIf="!flag_search"
+  [items]="combineRecomendacionesAndCalificaciones()"
+  [cualidades]="cualidades"
+></app-card>
