@@ -1,32 +1,65 @@
-<!-- app-card.component.html -->
 <div class="card-deck">
   <ng-container *ngFor="let item of items; trackBy: trackByFn">
     <div class="card">
-      <img class="card-img-top imagen-de-prueba" [src]="item['portadaURL']" alt="Imagen de Juego" (error)="onImageError($event) "  (click)="seeProduct(item)" *ngIf="item['JuegoID'] && item['NombreJuego'] && item['Descripcion']"/>
+      <img
+        class="card-img-top imagen-de-prueba"
+        [src]="item['portadaURL']"
+        alt="Imagen de Juego"
+        (error)="onImageError($event)"
+        (click)="seeProduct(item)"
+        *ngIf="item['JuegoID'] && item['NombreJuego'] && item['Descripcion']"
+      />
       <div class="card-body">
-        <h5 class="card-title" (click)="seeProduct(item)" *ngIf="item['JuegoID'] && item['NombreJuego'] && item['Descripcion']">
-          {{ item['NombreJuego'] }}
+        <h5
+          class="card-title"
+          (click)="seeProduct(item)"
+          *ngIf="item['JuegoID'] && item['NombreJuego'] && item['Descripcion']"
+        >
+          {{ item["NombreJuego"] }}
         </h5>
-        <p class="card-text">{{ item['Descripcion'] }}</p>
+        <p class="card-text">{{ item["Descripcion"] }}</p>
         <!-- Agrega aquí el código para las barras de progreso -->
-        <div *ngIf="item.calificacionesGlobales && item.calificacionesGlobales.length > 0" class="div_Grafica">
+        <div
+          *ngIf="
+            calificacionesGlobales &&
+            calificacionesGlobales.length > 0
+          "
+          class="div_Grafica"
+        >
           <div class="row g-0">
             <div class="col-md-12">
-              <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
+              <div
+                *ngFor="let cualidad of cualidades"
+                class="d-flex mb-3 align-items-center"
+              >
                 <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
-                <div class="col-md-2 me-3">{{ cualidadesValores['valor' + cualidad.id] }}%</div>
-                <div class="progress flex-grow-1" style="height: 25px;">
-                  <div class="progress-bar text-dark"
-                    [class.bg-success]="cualidadesValores['valor' + cualidad.id] >= 75"
-                    [class.bg-info]="cualidadesValores['valor' + cualidad.id] >= 50 && cualidadesValores['valor' + cualidad.id] < 75"
-                    [class.bg-warning]="cualidadesValores['valor' + cualidad.id] >= 25 && cualidadesValores['valor' + cualidad.id] < 50"
-                    [class.bg-danger]="cualidadesValores['valor' + cualidad.id] < 25"
+                <div class="col-md-2 me-3">
+                  {{ obtenerValorCualidad(item, cualidad) }}%
+                </div>
+                <div class="progress flex-grow-1" style="height: 25px">
+                  <div
+                    class="progress-bar text-dark"
+                    [class.bg-success]="
+                      obtenerValorCualidad(item, cualidad) >= 75
+                    "
+                    [class.bg-info]="
+                      obtenerValorCualidad(item, cualidad) >= 50 &&
+                      obtenerValorCualidad(item, cualidad) < 75
+                    "
+                    [class.bg-warning]="
+                      obtenerValorCualidad(item, cualidad) >= 25 &&
+                      obtenerValorCualidad(item, cualidad) < 50
+                    "
+                    [class.bg-danger]="
+                      obtenerValorCualidad(item, cualidad) < 25
+                    "
                     role="progressbar"
-                    [style.width.%]="cualidadesValores['valor' + cualidad.id]"
-                    [attr.aria-valuenow]="cualidadesValores['valor' + cualidad.id]"
+                    [style.width.%]="obtenerValorCualidad(item, cualidad)"
+                    [attr.aria-valuenow]="obtenerValorCualidad(item, cualidad)"
                     aria-valuemin="0"
-                    aria-valuemax="100">
-                    {{ cualidadesValores['valor' + cualidad.id] }}%
+                    aria-valuemax="100"
+                  >
+                    {{ obtenerValorCualidad(item, cualidad) }}%
                   </div>
                 </div>
               </div>

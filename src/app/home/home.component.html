@@ -1,8 +1,71 @@
 <app-search (messageEvent)="receiveMessage($event)"></app-search>
 
-<!-- Combine the arrays into a single array with additional property -->
-<app-card
-  *ngIf="!flag_search"
-  [items]="combineRecomendacionesAndCalificaciones()"
-  [cualidades]="cualidades"
-></app-card>
+<div
+  *ngIf="!flag_search && recomendaciones && recomendaciones.length > 0"
+  class="card-deck"
+>
+  <div *ngFor="let juego of datosjuegos" class="card">
+    <!-- Puedes personalizar el diseño de la tarjeta según tus necesidades -->
+
+    <img
+      class="card-img-top imagen-de-prueba"
+      [src]="juego.portadaURL"
+      alt="Portada del juego"
+      (error)="onImageError($event)"
+      (click)="seeProduct(juego)"
+      *ngIf="juego['JuegoID'] && juego['NombreJuego'] && juego['Descripcion']"
+    />
+    <div class="card-body">
+      <h5 class="card-title"
+      (click)="seeProduct(juego)"
+      *ngIf="juego['JuegoID'] && juego['NombreJuego'] && juego['Descripcion']"
+      
+      >{{ juego.NombreJuego }}</h5>
+      <p class="card-text">{{ juego["Descripcion"] }}</p>
+      <div
+        *ngIf="calificacionesGlobales.length > 0"
+        class="div_Grafica"
+        id="div_Grafica"
+        #div_Grafica
+      >
+        <div class="row g-0">
+          <div class="col-md-12">
+            <div
+              *ngFor="let cualidad of cualidades"
+              class="d-flex mb-3 align-items-center"
+            >
+              <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
+              <div class="col-md-2 me-3">
+                {{ obtenerValorCualidad(juego, cualidad) }}%
+              </div>
+              <div class="progress flex-grow-1" style="height: 25px">
+                <div
+                  class="progress-bar text-dark"
+                  [class.bg-success]="
+                    obtenerValorCualidad(juego, cualidad) >= 75
+                  "
+                  [class.bg-info]="
+                    obtenerValorCualidad(juego, cualidad) >= 50 &&
+                    obtenerValorCualidad(juego, cualidad) < 75
+                  "
+                  [class.bg-warning]="
+                    obtenerValorCualidad(juego, cualidad) >= 25 &&
+                    obtenerValorCualidad(juego, cualidad) < 50
+                  "
+                  [class.bg-danger]="obtenerValorCualidad(juego, cualidad) < 25"
+                  role="progressbar"
+                  [style.width.%]="obtenerValorCualidad(juego, cualidad)"
+                  [attr.aria-valuenow]="obtenerValorCualidad(juego, cualidad)"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {{ obtenerValorCualidad(juego, cualidad) }}%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

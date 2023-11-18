@@ -197,6 +197,20 @@ export class ApiService {
     return this._http.get(`${this.apiUrl}/juego/${id}`);
   }
 
+  obtenerJuegosPorIds(juegoIds: string[]): Observable<any> {
+    const url = `${this.apiUrl}/obtenerJuegosPorIds`;
+
+    // Configura los encabezados de la solicitud con el token de autenticación si es necesario
+    const headers = this.getToken()
+      ? new HttpHeaders({
+          Authorization: `Bearer ${this.getToken()}`,
+        })
+      : undefined;
+
+    // Realiza una solicitud POST al servidor con los IDs de juegos
+    return this._http.post(url, { juegoIds }, { headers });
+  }
+
   /////////calificaciones///////////////
 
   // Método para actualizar calificaciones
@@ -261,7 +275,19 @@ export class ApiService {
   }
 
 
+  obtenerCalificacionesGlobales(juegoIds: string[]): Observable<any> {
+    const url = `${this.apiUrl}/obtenerCalificacionGlobal`;
 
+    // Configura los encabezados de la solicitud si es necesario
+    const headers = {
+      'Content-Type': 'application/json',
+      // Puedes agregar tu token de autenticación si es necesario
+      // 'Authorization': `Bearer ${this.getToken()}`,
+    };
+
+    // Realiza una solicitud POST al servidor con los IDs de juegos
+    return this._http.post(url, { juegoIds }, { headers });
+  }
 
 
 // Método para obtener recomendaciones de juegos basadas en intereses de perfil objetivo

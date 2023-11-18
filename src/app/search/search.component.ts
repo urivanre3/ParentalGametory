@@ -36,12 +36,12 @@ export class SearchComponent implements OnInit {
         this.messageEvent.emit(this.message);
       });
     } else {
-      this.message = 'no';
-      this.messageEvent.emit(this.message);
+      this.messageEvent.emit('cleared');
       this.flag = true;
       this.flag_loading = false;
     }
   }
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.messageEvent.emit('init'); // Emite el evento al inicializar el componente
+  }
 }

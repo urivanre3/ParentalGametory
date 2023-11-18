@@ -14,12 +14,12 @@
   overflow: hidden; /* Evitar bordes redondeados de la imagen se vean fuera de la tarjeta */
 }
 
-.card-body {
+/* .card-body {
   padding: 1rem;
   display: flex;
   flex-direction: column;
   height: 100%;
-}
+} */
 
 .card-footer {
   margin-top: auto; /* Empujar el pie de tarjeta hacia abajo */
