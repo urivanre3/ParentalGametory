@@ -187,6 +187,25 @@ export class ApiService {
   }
   /////////Videojuegos//////
 
+  obtenerGaleriaJuegos(): Observable<any> {
+    const url = `${this.apiUrl}/galeriajuegos`;
+
+    // Realiza una solicitud GET al servidor para obtener la galería de juegos
+    return this._http.get(url);
+  }
+
+  obtenerJuegosPorCualidad(cualidad: string): Observable<any> {
+    const url = `${this.apiUrl}/obtenerJuegosPorCualidad/${cualidad}`;
+  
+    // Realiza una solicitud GET al servidor para obtener juegos por la cualidad proporcionada
+    return this._http.get(url).pipe(
+      catchError(error => {
+        console.error('Error en la solicitud de obtenerJuegosPorCualidad:', error);
+        // Puedes devolver un valor predeterminado o lanzar un nuevo observable de error
+        return of([]); // O return throwError('Mensaje de error personalizado');
+      })
+    );
+  }
   //obtener los videojuegos por el nombre
   get_juegos_por_nombre(search: string): Observable<any> {
     return this._http.get(`${this.apiUrl}/${search}`);

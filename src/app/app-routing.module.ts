@@ -49,8 +49,8 @@ const routes: Routes = [
   //Admin
   
    
-  {path: 'admin', pathMatch: 'full', redirectTo: 'admin/videogames'},
-  {path: 'admin/videogames', component:VideogamesComponent},
+
+  {path: 'Galería', component:VideogamesComponent},
 
 /* {path: 'admin/orders', component: OrdersComponent}, */
 /* {path: 'admin/users', component: UsersComponent}, */

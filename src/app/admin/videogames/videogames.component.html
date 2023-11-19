@@ -1,62 +1,81 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cdbootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cdbootstrap/css/cdb.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/cdb.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/cdbootstrap/js/bootstrap.min.js"></script>
-  <script src="https://kit.fontawesome.com/9d1d9a82d2.js" crossorigin="anonymous"></script>
-
-  <title>How to create bootstrap charts using bootstrap 5</title>
-</head>
-<style>
-  .chart-container {
-    width: 50%;
-    height: 50%;
-    margin: auto;
-  }
-</style>
-
-<body>
-  <div class="card chart-container">
-    <canvas id="chart"></canvas>
+<div class="container-fluid">
+  <div>
+    <select class="form-select" aria-label="Default select example" (change)="ordenarJuegosPorCualidad($event)">
+      <option selected disabled>Ordenar videojuegos por: (Cualidades)</option>
+      <option *ngFor="let cualidad of cualidades" [value]="cualidad.id">{{ cualidad.nombre }}</option>
+    </select>
   </div>
 
-</body>
+  <div *ngIf="galeria && galeria.length > 0" class="card-deck">
+    <div *ngFor="let juego of galeria" class="card">
+      <!-- Puedes personalizar el diseño de la tarjeta según tus necesidades -->
 
-<script
-src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js">
-</script>
-<script>
-      const ctx = document.getElementById("chart").getContext('2d');
-      const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ["sunday", "monday", "tuesday",
-          "wednesday", "thursday", "friday", "saturday"],
-          datasets: [{
-            label: 'Last week',
-            backgroundColor: 'rgba(161, 198, 247, 1)',
-            borderColor: 'rgb(47, 128, 237)',
-            data: [3000, 4000, 2000, 5000, 8000, 9000, 2000],
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-              }
-            }]
-          }
-        },
-      });
-</script>
-
-</html> -->
+      <img
+        class="card-img-top imagen-de-prueba"
+        [src]="juego.portadaURL"
+        alt="Portada del juego"
+        (error)="onImageError($event)"
+        (click)="seeProduct(juego)"
+        *ngIf="juego['JuegoID'] && juego['NombreJuego'] && juego['Descripcion']"
+      />
+      <div class="card-body">
+        <h5
+          class="card-title"
+          (click)="seeProduct(juego)"
+          *ngIf="
+            juego['JuegoID'] && juego['NombreJuego'] && juego['Descripcion']
+          "
+        >
+          {{ juego.NombreJuego }}
+        </h5>
+        <p class="card-text">{{ juego["Descripcion"] }}</p>
+        <div
+          *ngIf="calificacionesGlobales.length > 0"
+          class="div_Grafica"
+          id="div_Grafica"
+          #div_Grafica
+        >
+          <div class="row g-0">
+            <div class="col-md-12">
+              <div
+                *ngFor="let cualidad of cualidades"
+                class="d-flex mb-3 align-items-center"
+              >
+                <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
+                <div class="col-md-2 me-3">
+                  {{ obtenerValorCualidad(juego, cualidad) }}%
+                </div>
+                <div class="progress flex-grow-1" style="height: 25px">
+                  <div
+                    class="progress-bar text-dark"
+                    [class.bg-success]="
+                      obtenerValorCualidad(juego, cualidad) >= 75
+                    "
+                    [class.bg-info]="
+                      obtenerValorCualidad(juego, cualidad) >= 50 &&
+                      obtenerValorCualidad(juego, cualidad) < 75
+                    "
+                    [class.bg-warning]="
+                      obtenerValorCualidad(juego, cualidad) >= 25 &&
+                      obtenerValorCualidad(juego, cualidad) < 50
+                    "
+                    [class.bg-danger]="
+                      obtenerValorCualidad(juego, cualidad) < 25
+                    "
+                    role="progressbar"
+                    [style.width.%]="obtenerValorCualidad(juego, cualidad)"
+                    [attr.aria-valuenow]="obtenerValorCualidad(juego, cualidad)"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {{ obtenerValorCualidad(juego, cualidad) }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
