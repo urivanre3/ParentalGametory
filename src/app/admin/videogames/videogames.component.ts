@@ -14,6 +14,7 @@ export class VideogamesComponent implements OnInit {
   calificacionesGlobales: any[] = [];
 
   galeria: any[] = [];
+  ordencualidad: any[] = [];
   cualidades = [
     { id: 1, nombre: 'Humanidades y Emociones' },
     { id: 2, nombre: 'Historica' },
@@ -25,21 +26,18 @@ export class VideogamesComponent implements OnInit {
     { id: 8, nombre: 'Lectura y Lenguaje' },
     // Agrega las otras cualidades aquí
   ];
-  cualidad_orden:any;
+  cualidad_orden: any;
   @ViewChild('div_Grafica', { static: false }) divGrafica!: ElementRef;
 
   ngOnInit(): void {
     // Llama al nuevo método para obtener la galería de juegos
     this.api.obtenerGaleriaJuegos().subscribe(
       (galeria: any) => {
-
-        this.galeria=galeria;
+        this.galeria = galeria;
         // Manipula los datos de la galería de juegos aquí
         console.log('obtener galeria de juegos = ', this.galeria);
 
-        const juegoIds = this.galeria.map(
-          (galeria: any) => galeria.JuegoID
-        );
+        const juegoIds = this.galeria.map((galeria: any) => galeria.JuegoID);
 
         // Llama al método para obtener las calificaciones globales
         // Agrega las cualidades solo si el array está vacío
@@ -57,12 +55,10 @@ export class VideogamesComponent implements OnInit {
           ];
         }
 
-        
-
         this.api.obtenerCalificacionesGlobales(juegoIds).subscribe(
           (calificacionesGlobales) => {
             console.log(
-              'Calificaciones globales de juegos recomendados:',
+              'Calificaciones globales de juegos ordenados:',
               calificacionesGlobales
             );
             // Realiza acciones adicionales si es necesario
@@ -71,15 +67,12 @@ export class VideogamesComponent implements OnInit {
           },
           (error) => {
             console.error(
-              'Error al obtener calificaciones globales de juegos recomendados:',
+              'Error al obtener calificaciones globales de juegos sin ordenar:',
               error
             );
             // Maneja el error de manera apropiada
           }
         );
-
-
-              
       },
       (error: any) => {
         // Maneja cualquier error aquí
@@ -87,7 +80,6 @@ export class VideogamesComponent implements OnInit {
       }
     );
   }
-
 
   actualizarDatosGrafica() {
     // Verifica que divGrafica y su propiedad nativeElement estén definidos
@@ -132,7 +124,6 @@ export class VideogamesComponent implements OnInit {
     }
   }
 
-
   obtenerValorCualidad(juego: any, cualidad: any): number {
     const calificacionGlobal = this.calificacionesGlobales.find(
       (calificacion) => calificacion.JuegoID === juego.JuegoID
@@ -145,29 +136,98 @@ export class VideogamesComponent implements OnInit {
     return 0;
   }
 
-
   ordenarJuegosPorCualidad(event: any) {
     // Obtén el valor seleccionado del evento
     const cualidadSeleccionada = event.target.value;
-  
+
     // Verifica si el valor seleccionado es un número válido
     const cualidadIndex = parseInt(cualidadSeleccionada);
-  
-    if (!isNaN(cualidadIndex) && cualidadIndex >= 1 && cualidadIndex <= this.cualidades.length) {
+
+    if (
+      !isNaN(cualidadIndex) &&
+      cualidadIndex >= 1 &&
+      cualidadIndex <= this.cualidades.length
+    ) {
       // Asigna la cualidad correspondiente según el índice seleccionado
       this.cualidad_orden = this.cualidades[cualidadIndex - 1].nombre;
     } else {
       // Manejar el caso donde el valor seleccionado no es un número válido
       console.error('Índice de cualidad no válido.');
     }
-  
+
     if (this.cualidad_orden) {
       // Llama a la API para obtener juegos ordenados por la cualidad seleccionada
       this.api.obtenerJuegosPorCualidad(this.cualidad_orden).subscribe(
         (result: any) => {
           // Asigna los juegos según el resultado de la API
-          this.galeria = result; 
-          console.log('Juegos ordenados por cualidad',this.cualidad_orden, " = ", this.galeria);
+          this.ordencualidad = result;
+          console.log(
+            'Juegos ordenados por cualidad ',
+            this.cualidad_orden,
+            ' = ',
+            this.ordencualidad
+          );
+
+          const juegoIds = this.ordencualidad.map(
+            (ordencualidad: any) => ordencualidad.JuegoID
+          );
+
+          console.log('JuegosIDS =', juegoIds);
+
+          // Llama al método para obtener las calificaciones globales
+          // Agrega las cualidades solo si el array está vacío
+          if (this.cualidades.length === 0) {
+            this.cualidades = [
+              { id: 1, nombre: 'Humanidades y Emociones' },
+              { id: 2, nombre: 'Historica' },
+              { id: 3, nombre: 'Cultural' },
+              { id: 4, nombre: 'Aritmetica' },
+              { id: 5, nombre: 'Logica' },
+              { id: 6, nombre: 'Accesibilidad' },
+              { id: 7, nombre: 'Creatividad' },
+              { id: 8, nombre: 'Lectura y Lenguaje' },
+              // Agrega las otras cualidades aquí
+            ];
+          }
+
+          this.api.obtenerCalificacionesGlobales(juegoIds).subscribe(
+            (calificacionesGlobales) => {
+              console.log(
+                'Calificaciones globales de juegos ordenados:',
+                calificacionesGlobales
+              );
+              // Realiza acciones adicionales si es necesario
+              this.calificacionesGlobales = calificacionesGlobales;
+
+              // Llama al nuevo método para obtener la galería de juegos
+              this.api.obtenerJuegosPorIds(juegoIds).subscribe(
+                (juegos) => {
+                  // Haz algo con los datos de los juegos, por ejemplo, muestra en la consola
+                  console.log('Juegos obtenidos:', juegos);
+               
+          
+                  this.galeria = this.ordencualidad.map((orden: any) => {
+                    const juego = juegos.find((j: any) => j.JuegoID === orden.JuegoID);
+                    return juego;
+                  });
+                    console.log('galeria ordenada:', this.galeria);
+
+
+                },
+                (error: any) => {
+                  // Maneja cualquier error aquí
+                  console.error(error);
+                }
+              );
+            },
+            (error) => {
+              console.error(
+                'Error al obtener calificaciones globales de juegos ordenados:',
+                error
+              );
+              // Maneja el error de manera apropiada
+            }
+          );
         },
         (error: any) => {
           console.error('Error al obtener juegos por cualidad:', error);
@@ -176,7 +236,6 @@ export class VideogamesComponent implements OnInit {
       );
     }
   }
-
 
   seeProduct(item: any) {
     console.log('metodo ver juego');
