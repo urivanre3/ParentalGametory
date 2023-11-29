@@ -1,5 +1,23 @@
 
+.calificacionesusuario{
 
+width: 49%;
+ border-color: black;
+ margin-right: 2%;
+ border: 2px;
+ background-color: rgba(111, 238, 238, 0.773);
+}
+
+
+.calificacionesadmin{
+
+
+  width: 49%;
+  border-color: black;
+  border: 2px;
+  background-color: cornflowerblue;
+
+}
 
 
 .bar-container {

@@ -2,10 +2,10 @@
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="'/home'">
       <img
-        src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/logo.png?alt=media&token=46c212fa-4792-443a-b0c2-2ecc4bc2adc2"
+        src="/assets/Logo_Gametory.png"
         alt=""
-        width="30"
-        height="24"
+        width="120"
+        height="35"
         class="d-inline-block align-text-top"
       />
       Gametory
@@ -47,14 +47,14 @@
       </ul>
 
       <form class="d-flex container-fluid justify-content-start">
-        <a class="ms-auto" [routerLink]="['/mycart']">
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/cart.png?alt=media&token=ed6f89e4-4e6c-4575-b45b-e2e03357ad46"
+        <a class="ms-auto" [routerLink]="['/Libreria']">
+       <!--    <img
+            src="/assets/Libros_icono.png"
             alt=""
             width="35"
             height="35"
             class="d-inline-block"
-          />
+          /> -->
         </a>
 
         <div class="divImagenUsuario" *ngIf="loggedIn">
@@ -111,36 +111,6 @@
     </div>
   </div>
 </nav>
-
-<!-- Boton flotante-->
-
-<div class="fab-container">
-  <div class="fab shadow">
-    <div class="fab-content">
-      <img src="https://i.ibb.co/frB59Nj/help.png" alt="" width="60" />
-    </div>
-  </div>
-  <div class="sub-button shadow">
-    <a href="#" [routerLink]="['/faq']">
-      <img src="https://i.ibb.co/zSbvP2p/faq.png" alt="" width="45" />
-    </a>
-  </div>
-  <div class="sub-button shadow">
-    <a href="#" [routerLink]="['/contact']">
-      <img src="https://i.ibb.co/6HtfRgJ/contact.png" alt="" width="40" />
-    </a>
-  </div>
-
-  <div class="sub-button shadow">
-    <a href="#" [routerLink]="['/question']">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdIVj-nbM4REcyJpkKD7FYMGRi5CpjhEN-ZQ&usqp=CAU"
-        alt=""
-        width="40"
-      />
-    </a>
-  </div>
-</div>
 
 <div
   class="modal fade"

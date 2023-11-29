@@ -34,6 +34,7 @@ export class GamesComponent implements OnInit {
   key: string = 'session';
   idprueba!: number;
   userIduserId: any = null;
+  nombreusuario: any = null;
   //producto a imprimir
   juego: any = {};
   //cantidad a comprar
@@ -64,14 +65,15 @@ export class GamesComponent implements OnInit {
     valor8: 0,
     // Añade los valores iniciales para las otras cualidades según sea necesario
   };
-  juegoId: any;
 
+  juegoId: any;
+  calificacionesAdmin: any[] = [];
+  comentarios: any[] = [];
   constructor(
     @Optional() /*private auth: Auth, */ private api: ApiService,
     private router: ActivatedRoute,
     private el: ElementRef
   ) {
-
     console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 
@@ -80,23 +82,57 @@ export class GamesComponent implements OnInit {
       this.juegoId = params['id'];
       console.log('llego ' + this.juegoId);
 
-      this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
-        (calificacionesGlobales) => {
-          console.log('Calificaciones globales:', calificacionesGlobales);
-          this.calificacionesGlobales = calificacionesGlobales;
-          this.actualizarDatosGrafica();
+      this.api.obtenerComentariosPorJuego(this.juegoId).subscribe(     
+        (comentariodata) => {
+
+        this.comentarios = comentariodata;
+        console.log('comentarios = :', this.comentarios);
+        //aqui va la logica de mostrar los comentarios
+   
+      },
+      (error) => {
+        console.error('Error al obtener los comentarios:', error);
+      }
+      );
+
+      // Llamada al nuevo método para obtener calificación admin
+      this.api.obtenerCalificacionAdmin(this.juegoId).subscribe(
+        (calificacionAdmin) => {
+          this.calificacionesAdmin = calificacionAdmin;
+          console.log('Calificación admin:', this.calificacionesAdmin);
+          // Puedes manejar la calificación admin aquí según tus necesidades
+
+          this.api.obtenerCalificacionGlobal(this.juegoId).subscribe(
+            (calificacionesGlobales) => {
+              console.log('Calificaciones globales:', calificacionesGlobales);
+              this.calificacionesGlobales = calificacionesGlobales;
+              
+             
+    
+              this.actualizarDatosGrafica();
+            },
+            (error) => {
+              console.error('Error al obtener las calificaciones globales:', error);
+            }
+          );
+
+
+
         },
         (error) => {
-          console.error('Error al obtener las calificaciones globales:', error);
+          console.error('Error al obtener la calificación admin:', error);
+          // Manejar el error según tus necesidades
         }
       );
-      
+
+
     });
 
     this.api.getUserData().subscribe(
       (userData) => {
         // Verifica si userData contiene el ID del usuario
         if (userData && userData.UsuarioID) {
+          this.nombreusuario = userData.NombreUsuario;
           this.userIduserId = userData.UsuarioID;
 
           // Obtén las calificaciones para el usuario y el juego específicos
@@ -131,17 +167,21 @@ export class GamesComponent implements OnInit {
         console.error('Error al obtener datos del usuario', error);
       }
     );
-
   }
 
   calificacionesGlobales: any[] = [];
   @ViewChild('div_Grafica', { static: false }) divGrafica!: ElementRef;
+  @ViewChild('div_Grafica_admin', { static: false }) divGraficaAdmin!: ElementRef;
 
   ngAfterViewInit() {
-/*     this.actualizarDatosGrafica(); */
+    /*     this.actualizarDatosGrafica(); */
   }
 
   actualizarDatosGrafica() {
+
+    console.log('prueba Calificaciones globales:', this.calificacionesGlobales);
+    console.log('prueba Calificaciones admin:', this.calificacionesAdmin);
+  
     // Lógica para obtener y procesar los datos de calificaciones globales
 
     // Verifica que divGrafica y su propiedad nativeElement estén definidos
@@ -168,12 +208,19 @@ export class GamesComponent implements OnInit {
             barContainer.appendChild(bar);
           }
         });
-
+        console.log('Elemento creado para valoración global:', barContainer);
         this.divGrafica.nativeElement.appendChild(barContainer);
       });
+
+      // Llamada al nuevo método para obtener calificación admin
     } else {
       console.error('divGrafica o nativeElement no están definidos.');
     }
+
+
+
+    
+
   }
 
   isUserAuthenticated(): boolean {
@@ -293,16 +340,84 @@ export class GamesComponent implements OnInit {
     }
   }
 
-
   obtenerValorCualidad(cualidad: any): number {
     const calificacionGlobal = this.calificacionesGlobales[0]; // Supongo que solo hay un objeto en calificacionesGlobales
-  
+
     if (calificacionGlobal) {
       return calificacionGlobal[cualidad.nombre] || 0;
     }
-  
+
     return 0;
   }
+
+/*   obtenerValorCualidadAdmin(cualidad: any): number {
+    const calificacionGlobalAdmin = this.calificacionesAdmin[0]; // Supongo que solo hay un objeto en calificacionesGlobales
+
+    if (calificacionGlobalAdmin) {
+      console.log('if (calificacionGlobalAdmin = ', calificacionGlobalAdmin); // Imprime los valores en la consola
+      return calificacionGlobalAdmin[cualidad.nombre] || 0;
+    }
+
+    return 0;
+  
+  
+  }
+ */
+
+// Dentro de tu componente
+valorAdmin: number = 0; // Variable para almacenar el valor aleatorio
+
+  obtenerValorCualidadAdmin(cualidad: any): number {
+    // Devuelve un valor aleatorio entre 0 y 100 y almacénalo en una variable
+    this.valorAdmin = Math.floor(Math.random() * 101);
+    return this.valorAdmin;
+  }
+
+  nuevoComentario: string = '';
+  agregarComentario() {
+
+    console.log('Agregando comentario:', this.nuevoComentario);
+
+    // Resto del código...
+  
+
+    // Verifica que el nuevo comentario no esté vacío
+    if (this.nuevoComentario.trim() !== '') {
+      const nuevoComentario = {
+        UsuarioID: this.userIduserId, // Supongo que ya tienes el ID del usuario
+        JuegoID: this.juegoId,
+        nombre: this.nombreusuario,
+        ContenidoComentario: this.nuevoComentario,
+        FechaComentario: new Date().toISOString(), // O ajusta a tu formato de fecha
+      };
+      console.log('Comentario insertado exitosamente', nuevoComentario);
+      // Llama al servicio para insertar el nuevo comentario
+      this.api.insertarComentario(nuevoComentario).subscribe(
+        (response) => {
+          console.log('Comentario insertado exitosamente', response);
+
+          // Actualiza la lista de comentarios después de la inserción exitosa
+          this.api.obtenerComentariosPorJuego(this.juegoId).subscribe(
+            (comentarios) => {
+              this.comentarios = comentarios;
+            },
+            (error) => {
+              console.error('Error al obtener comentarios:', error);
+            }
+          );
+          console.log('Nuevo comentario insertado:', response);
+          // Limpia el campo del nuevo comentario
+          this.nuevoComentario = '';
+        },
+        (error) => {
+          console.error('Error al insertar comentario:', error);
+        }
+      );
+    }
+  }
+
+
+
 }
 
 interface CualidadesValores {

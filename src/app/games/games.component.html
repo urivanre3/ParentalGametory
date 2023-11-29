@@ -39,18 +39,36 @@
             </div>
           </div>
         </div>
-        <div *ngIf="calificacionesGlobales.length > 0" class="div_Grafica" id="div_Grafica" #div_Grafica>
+
+        <div
+          *ngIf="calificacionesGlobales.length > 0"
+          class="div_Grafica"
+          id="div_Grafica"
+          #div_Grafica
+        >
           <div class="row g-0">
-            <div class="col-md-12">
-              <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
+            <div class="calificacionesusuario col-md-5">
+              <h4>Valoración Global</h4>
+              <div
+                *ngFor="let cualidad of cualidades"
+                class="d-flex mb-3 align-items-center"
+              >
                 <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
-                <div class="col-md-2 me-3">{{ obtenerValorCualidad(cualidad) }}%</div>
-                <div class="progress flex-grow-1" style="height: 25px;">
+                <div class="col-md-2 me-3">
+                  {{ obtenerValorCualidad(cualidad) }}%
+                </div>
+                <div class="progress flex-grow-1" style="height: 25px">
                   <div
                     class="progress-bar text-dark"
                     [class.bg-success]="obtenerValorCualidad(cualidad) >= 75"
-                    [class.bg-info]="obtenerValorCualidad(cualidad) >= 50 && obtenerValorCualidad(cualidad) < 75"
-                    [class.bg-warning]="obtenerValorCualidad(cualidad) >= 25 && obtenerValorCualidad(cualidad) < 50"
+                    [class.bg-info]="
+                      obtenerValorCualidad(cualidad) >= 50 &&
+                      obtenerValorCualidad(cualidad) < 75
+                    "
+                    [class.bg-warning]="
+                      obtenerValorCualidad(cualidad) >= 25 &&
+                      obtenerValorCualidad(cualidad) < 50
+                    "
                     [class.bg-danger]="obtenerValorCualidad(cualidad) < 25"
                     role="progressbar"
                     [style.width.%]="obtenerValorCualidad(cualidad)"
@@ -59,6 +77,32 @@
                     aria-valuemax="100"
                   >
                     {{ obtenerValorCualidad(cualidad) }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calificacionesadmin col-md-5">
+              <div>
+                <h4>Valoración Administradores</h4>
+                <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
+                  <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
+                  <div class="col-md-2 me-3">{{ obtenerValorCualidadAdmin(cualidad) }}%</div>
+                  <div class="progress flex-grow-1" style="height: 25px">
+                    <div
+                      class="progress-bar text-dark"
+                      [class.bg-success]="valorAdmin >= 75"
+                      [class.bg-info]="valorAdmin >= 50 && valorAdmin < 75"
+                      [class.bg-warning]="valorAdmin >= 25 && valorAdmin < 50"
+                      [class.bg-danger]="valorAdmin < 25"
+                      role="progressbar"
+                      [style.width.%]="valorAdmin"
+                      [attr.aria-valuenow]="valorAdmin"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      {{ valorAdmin }}%
+                    </div>
                   </div>
                 </div>
               </div>
@@ -114,46 +158,32 @@
               </form>
             </ul>
           </div>
-
           <div class="comentarios col-md-8">
             <h4>Comentarios</h4>
             <ul class="list-group">
-              <div class="d-flex flex-column justify-content-between">
-                <!-- <div *ngFor="let cualidad of cualidades; let i = index">
-                  <div class="row g-0">
-                    <li class="list-group-item border-primary rounded">
-                      <div class="row g-0">
-                        <div class="col-md-7">
-                          <label for="cualidad{{ i + 1 }}" class="form-label">{{
-                            cualidad.nombre
-                          }}</label>
-                        </div>
-                        <div class="col-md-5">
-                          <div id="{{ 'rangeValue' + cualidad.id }}">
-                            {{ cualidadesValores["valor" + cualidad.id] }}
-                          </div>
-                          <input
-                            type="range"
-                            class="form-range"
-                            #customRange
-                            [id]="'customRange' + cualidad.id"
-                            name="cualidad{{ i }}"
-                            min="0"
-                            max="100"
-                            step="0.5"
-                            [(ngModel)]="
-                              cualidadesValores['valor' + cualidad.id]
-                            "
-                            (input)="actualizarValorRango($event, cualidad.id)"
-                          />
-                        </div>
-                      </div>
-                    </li>
-                  </div>
-                </div> -->
-              </div>
+              <li class="list-group-item" *ngFor="let comentario of comentarios">
+                <strong>{{ comentario.nombre }}:</strong>
+                {{ comentario.ContenidoComentario }}
+                <small class="text-muted">{{ comentario.FechaComentario | date:'yyyy-MM-dd' }}</small>
+              </li>
             </ul>
+          
+            <!-- Formulario para ingresar nuevos comentarios -->
+            <form (ngSubmit)="agregarComentario()">
+              <div class="mb-3">
+                <label for="contenidoComentario" class="form-label">Nuevo Comentario:</label>
+                <textarea
+                  class="form-control"
+                  id="contenidoComentario"
+                  name="contenidoComentario"
+                  [(ngModel)]="nuevoComentario"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Agregar Comentario</button>
+            </form>
           </div>
+          
         </div>
       </div>
     </div>

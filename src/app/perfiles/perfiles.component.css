@@ -1,3 +1,79 @@
+/* Estilo para el contenedor con desplazamiento */
+.scrollable-container {
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical cuando sea necesario */
+  max-height: 90vh; /* Ajusta la altura máxima al 100% del alto de la pantalla */
+}
+
+
+/* Estilos generales para el div mensaje */
+.mensaje {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Estilo específico para el mensaje "Selecciona un perfil" */
+.mensaje.selecciona {
+  color: #3366cc; /* Color de texto azul */
+  font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
+  text-align: center; /* Centra el texto */
+  display: flex;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo específico para el mensaje "Crea un perfil" */
+.mensaje.crea {
+  color: #cc3333; /* Color de texto rojo */
+  max-width: 600px; /* Establece un ancho máximo para el mensaje */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center; /* Centra el texto */
+  font-weight: bolder;
+  font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+/* Estilos para la barra lateral */
+.text-bg-dark {
+  background-color: #333; /* Ajusta el color de fondo de la barra lateral según tus necesidades */
+  color: white; /* Ajusta el color del texto según tus necesidades */
+}
+
+/* Estilos para el contenido principal */
+.flex-grow-1 {
+  padding: 20px; /* Ajusta el espacio interno según tus necesidades */
+}
+
+/* Asegúrate de que el contenido principal no sea más ancho que la pantalla */
+@media (min-width: 768px) {
+  .flex-grow-1 {
+    max-width: calc(100% - 280px); /* Resta el ancho de la barra lateral */
+  }
+}
+
+
+
+
+
+
+
+
+
 /* Cambia el color de fondo de la barra del rango */
 .titulo_columna{
 

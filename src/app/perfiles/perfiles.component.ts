@@ -62,6 +62,7 @@ export class PerfilesComponent implements OnInit {
                 if (respuesta && respuesta.length > 0) {
                   // profiles es la respuesta con los perfiles relacionados
                   this.perfiles = respuesta;
+                  
 
                   for (const perfil of this.perfiles) {
                     console.log('Perfiles id: ', perfil.PerfilObjetivoID);

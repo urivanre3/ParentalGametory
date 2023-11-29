@@ -279,6 +279,16 @@ export class ApiService {
   
   //////////// CALIFICACIONES GLOBALES ///////////////
 
+
+  obtenerCalificacionAdmin(juegoId: string): Observable<any> {
+    const url = `${this.apiUrl}/obtenerCalificacionAdmin/${juegoId}`;
+
+    // Realiza una solicitud GET al servidor para obtener la calificación admin
+    return this._http.get(url);
+  }
+
+
+
   obtenerCalificacionGlobal(juegoId: string): Observable<any> {
     const url = `${this.apiUrl}/obtenerCalificacionGlobal/${juegoId}`;
   
@@ -325,7 +335,27 @@ obtenerRecomendaciones(perfilId: string): Observable<any> {
 }
 
 
+///////////////comentario//////////
 
+// Método para insertar un nuevo comentario
+insertarComentario(nuevoComentario: any): Observable<any> {
+  // Configura los encabezados de la solicitud con el token de autenticación si es necesario
+  const headers = this.getToken()
+    ? new HttpHeaders({
+        Authorization: `Bearer ${this.getToken()}`,
+      })
+    : undefined;
+
+  // Realiza una solicitud al servidor para insertar un nuevo comentario
+  return this._http.post(`${this.apiUrl}/insertarComentario`, nuevoComentario, { headers });
+}
+
+
+// Método para obtener comentarios por JuegoID
+obtenerComentariosPorJuego(juegoId: string): Observable<any> {
+  // Realiza una solicitud al servidor para obtener comentarios por JuegoID
+  return this._http.get(`${this.apiUrl}/obtenerComentariosPorJuego/${juegoId}`);
+}
 
 
 

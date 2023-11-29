@@ -1,132 +1,128 @@
-<div class="row g-0 auth-row">
-    <div class="col-lg-6">
-        <div class="auth-cover-wrapper bg-primary-100">
-            <div class="auth-cover">
-                <div class="title text-center">
-                    <h1 class="text-primary mb-10">Bienvenido</h1>
-                    <p class="text-medium">
-                        Crea una cuenta para unirte a nuestra comunidad
-                        <br class="d-sm-block">
-                        Gametory.
+<div class="container-fluid">
+    <div class="row g-0 mt-6 ">
+
+        <div class="col-md-6 g-5">
+            <div class="auth-cover-wrapper bg-primary-100">
+                <div class="auth-cover">
+                    <div class="title text-center">
+                        <h1 class="text-primary mb-10">Bienvenido</h1>
+                        <p class="text-medium">
+                            Crea una cuenta para unirte a nuestra comunidad
+                            <br class="d-sm-block">
+                            Gametory.
+                        </p>
+                    </div>
+                    <div class="cover-image">
+                     <!--    <img height="500"
+                        width="500"
+                            src="/assets/Logo_Gametory.png"
+                            alt=""> -->
+                            <img src="/assets/Logo_Gametory.png" class="img-fluid" alt="...">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 g-5">
+            <div class="signup-wrapper">
+                <div class="form-wrapper">
+                    <h6 class="mb-15">Registro</h6>
+                    <p class="text-sm mb-25">
+                        ¡Comencemos creando una cuenta!
                     </p>
-                </div>
-                <div class="cover-image">
-                    <img height="500"
-                        src="https://firebasestorage.googleapis.com/v0/b/web-2022-f5262.appspot.com/o/logo.png?alt=media&token=46c212fa-4792-443a-b0c2-2ecc4bc2adc2"
-                        alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="signup-wrapper">
-            <div class="form-wrapper">
-                <h6 class="mb-15">Registro</h6>
-                <p class="text-sm mb-25">
-                    ¡Comencemos creando una cuenta!
-                </p>
-                <form [formGroup]="form" (ngSubmit)="Registro()" class="needs-validation" novalidate>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-style-1">
-                                <label>Nombre</label>
-                                <input type="text" placeholder="name..." formControlName="nombre"
-                                    [ngClass]="{'is-invalid':!form.get('nombre')?.valid}" />
-                                <div *ngIf="form.controls['nombre'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
+                    <form [formGroup]="form" (ngSubmit)="Registro()" class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-lg-6 g-1">
+                                <div class="input-style-1">   <div class="row">
+                                    <label class="inputclase">Nombre</label>  </div>   <div class="row">
+                                    <input type="text" placeholder="nombre..." formControlName="nombre"
+                                        [ngClass]="{'is-invalid':!form.get('nombre')?.valid}" />
+                                    <div *ngIf="form.controls['nombre'].errors?.['required']" class="invalid-feedback">
+                                        * Campo Obligatorio
+                                    </div>
+                                    <div *ngIf="form.controls['nombre'].errors?.['minlength']"
+                                        class="invalid-feedback">
+                                        * Un minimo de 3 caracteres
+                                    </div>
+
                                 </div>
-                                <div *ngIf="form.controls['nombre'].errors?.['minlength']"
-                                    class="invalid-feedback">
-                                    * Un minimo de 3 caracteres
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-style-1">
-                                <label>Correo</label>
-                                <input type="email" placeholder="correo..." formControlName="correo"
-                                    [ngClass]="{'is-invalid':!form.get('correo')?.valid}">
-                                <div *ngIf="form.controls['correo'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
+                            <div class="col-lg-6 g-1">
+                                <div class="input-style-1">
+                                    <div class="row">
+                                    <label class="inputclase">Correo</label>  </div>
+                                    <div class="row">
+                                  
+                                    <input type="email" placeholder="correo..." formControlName="correo"
+                                        [ngClass]="{'is-invalid':!form.get('correo')?.valid}">
+                                    <div *ngIf="form.controls['correo'].errors?.['required']" class="invalid-feedback">
+                                        * Campo Obligatorio
+                                    </div>
+                                    <div *ngIf="form.controls['correo'].errors?.['correo']" class="invalid-feedback">
+                                        * Correo invalido
+                                    </div>
                                 </div>
-                                <div *ngIf="form.controls['correo'].errors?.['correo']" class="invalid-feedback">
-                                    * Correo invalido
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-style-1">
-                                <label>Contraseña</label>
-                                <input type="password" placeholder="contraseña..." formControlName="contraseña"
-                                    [ngClass]="{'is-invalid':!form.get('contraseña')?.valid}">
-                                <div *ngIf="form.controls['contraseña'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
-                                </div>
-                                <div *ngIf="form.controls['contraseña'].errors?.['minlength']" class="invalid-feedback">
-                                    * Un minimo de 8 caracteres
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-style-1">
-                                <label>Confirmar contraseña</label>
-                                <input type="password" placeholder="confirm contraseña..." formControlName="confirmacion_contraseña"
-                                    [ngClass]="{'is-invalid':!form.get('confirmacion_contraseña')?.valid}">
-                                <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
-                                </div>
-                                <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['minlength']" class="invalid-feedback">
-                                    * Un minimo de 8 caracteres
-                                </div>
-                                <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['mustMatch']" class="invalid-feedback">
-                                    No es la misma contraseña
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                   <!--  <div class="row">
-                        <div class="col-lg-8">
-                            <div class="input-style-1">
-                                <label>Address</label>
-                                <input type="text" placeholder="address..." formControlName="address"
-                                    [ngClass]="{'is-invalid':!form.get('address')?.valid}">
-                                <div *ngIf="form.controls['address'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
-                                </div>
-                                <div *ngIf="form.controls['address'].errors?.['minlength']" class="invalid-feedback">
-                                    * At least 3 characters
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="input-style-1">
-                                <label>City</label>
-                                <input type="text" placeholder="city..." formControlName="city"
-                                    [ngClass]="{'is-invalid':!form.get('city')?.valid}">
-                                <div *ngIf="form.controls['city'].errors?.['required']" class="invalid-feedback">
-                                    * Campo Obligatorio
-                                </div>
-                                <div *ngIf="form.controls['city'].errors?.['minlength']" class="invalid-feedback">
-                                    * At least 3 characters
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <div class="row">
                     
-                        <div class="col-12">
-                            <div class="button-group d-flex justify-content-center flex-wrap">
-                                <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center">
-                                    Finalizar Registro
-                                </button>
+                        
+                            <div class="col-lg-6 g-1">
+                                <div class="input-style-1">
+                                        <div class="row">
+                                    <label class="inputclase" >Contraseña</label></div>
+
+                                    <div class="row">
+                                    <input type="password" placeholder="contraseña..." formControlName="contraseña"
+                                        [ngClass]="{'is-invalid':!form.get('contraseña')?.valid}">
+
+                                    <div *ngIf="form.controls['contraseña'].errors?.['required']" class="invalid-feedback">
+                                        * Campo Obligatorio
+                                    </div>
+                                    <div *ngIf="form.controls['contraseña'].errors?.['minlength']" class="invalid-feedback">
+                                        * Un minimo de 8 caracteres
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 g-1">
+                                <div class="input-style-1">
+                                    <div class="row">
+                                    <label class="inputclase">Confirmar contraseña</label>
+                                </div>
+
+                                    <div class="row">
+                                    <input type="password" placeholder="confirma contraseña..." formControlName="confirmacion_contraseña"
+                                        [ngClass]="{'is-invalid':!form.get('confirmacion_contraseña')?.valid}">
+                                    <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['required']" class="invalid-feedback">
+                                        * Campo Obligatorio
+                                    </div>
+                                    <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['minlength']" class="invalid-feedback">
+                                        * Un minimo de 8 caracteres
+                                    </div>
+                                    <div *ngIf="form.controls['confirmacion_contraseña'].errors?.['mustMatch']" class="invalid-feedback">
+                                        No es la misma contraseña
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-                
+    
+                        <div class="row">
+                        
+                            <div class="col-12 mt-4">
+                                <div class="button-group d-flex justify-content-center flex-wrap">
+                                    <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center">
+                                        Finalizar Registro
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
             </div>
         </div>
+
     </div>
+
 </div>

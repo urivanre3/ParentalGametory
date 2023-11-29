@@ -43,11 +43,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.modal = new window.bootstrap.Modal(document.getElementById('modal'));
   }
 
+  ngAfterViewInit(): void {
+    this.modal = new window.bootstrap.Modal(document.getElementById('modal'));
+  }
+  
   ngOnDestroy(): void {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe(); // Asegúrate de cancelar la suscripción cuando el componente se destruye
     }
   }
+
+
 
   abrirModal(): void {
     this.modal.show();
