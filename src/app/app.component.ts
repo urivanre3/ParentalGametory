@@ -7,6 +7,7 @@ import { ApiService } from './api.service';
 import { SigninComponent } from './admin/signin/signin.component';
 import { HomeComponent } from './home/home.component';
 import { PerfilesComponent } from './perfiles/perfiles.component';
+import { GamesComponent } from './games/games.component';
 
 
 
@@ -70,8 +71,8 @@ export class AppComponent {
     if(component instanceof SignupComponent) this.showNavbar = false;
     if(component instanceof HomeComponent) this.showNavbar = true ,this.isAdmin=false;
     if(component instanceof PerfilesComponent) this.showNavbar = false, this.isAdmin=true;
-    if(component instanceof SignupComponent) this.showNavbar = false;
-    if(component instanceof SignupComponent) this.showNavbar = false;
+    if(component instanceof VideogamesComponent) this.showNavbar = true;
+    if(component instanceof GamesComponent) this.showNavbar = true;
   }
 
 

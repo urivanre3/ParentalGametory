@@ -4,7 +4,7 @@
       <div class="container2">
         <div class="note-wrapper success-alert">
           <div class="alert">
-            <h5 class="text-bold mb-15">Note:</h5>
+            <h5 class="text-bold mb-15">Nota:</h5>
             <p class="text-md text-black">
               ¡Hola! Recuerda que puedes contribuir a la comunidad con tu
               opinión sobre el videojuego y calificar sus características.
@@ -121,9 +121,9 @@
           </div>
         </div>
 
-        <div class="parteInferior row g-0 m-4">
+        <div class="parteInferior row g-0 m-4"   *ngIf="loggedIn" >
           <div class="calificaciones col-md-4 mt-8">
-            <h4>Cualidades y Valoración</h4>
+            <h4>Valora este videjuego</h4>
             <ul class="list-group">
               <form (ngSubmit)="actualizarCalificacion()">
                 <div class="d-flex flex-column justify-content-between">
@@ -196,6 +196,38 @@
           </div>
           
         </div>
+
+        <div class="parteInferior row g-0 m-4"   *ngIf="!loggedIn" >
+          <div class="calificaciones col-md-4 mt-8">
+            <div class="note-wrapper success-alert">
+              <div class="alert">
+                <h5 class="text-bold mb-15">Nota:</h5>
+                <p class="text-md text-black">
+                  ¡Oh! Parece que no tienes una sesion iniciada.
+                  Registrate e inicia sesion para evaluar o comentar sobre este
+                  este videojuego.
+           
+                </p>
+              </div>
+            </div>
+           
+          </div>
+          <div class="comentarios col-md-8">
+            <h4>Comentarios</h4>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let comentario of comentarios">
+                <strong>{{ comentario.nombre }}:</strong>
+                {{ comentario.ContenidoComentario }}
+                <small class="text-muted">{{ comentario.FechaComentario | date:'yyyy-MM-dd' }}</small>
+              </li>
+            </ul>
+          
+      
+          </div>
+          
+        </div>
+
+
       </div>
     </div>
   </div>

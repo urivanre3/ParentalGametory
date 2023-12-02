@@ -15,7 +15,12 @@
       class="collapse navbar-collapse order-3 order-lg-2"
       id="navbarSupportedContent"
     >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      <a class="nav-link" href="/Galería" role="button" aria-expanded="false">
+        Galería
+      </a>
+      <ng-container *ngIf="!loggedIn">
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -40,11 +45,10 @@
             </li>
           </ul>
         </li>
-
-        <a class="nav-link" href="/Galería" role="button" aria-expanded="false">
-          Galería
-        </a>
-      </ul>
+      </ng-container>
+    
+   
+    </ul>
 
       <form class="d-flex container-fluid justify-content-start">
         <a class="ms-auto" [routerLink]="['/Libreria']">

@@ -87,7 +87,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.loggedIn = false;
       this.userData = null;
 
-      this.router.navigate(['/home']);
+      window.location.reload();
     });
   }
 }

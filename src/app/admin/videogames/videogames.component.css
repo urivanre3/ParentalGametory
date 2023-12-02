@@ -1,50 +1,74 @@
-
 .card-deck {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Modificado para mostrar tres columnas */
-    gap: 1%;
-    padding: 2%;
-    background-color: #f8f9fa;
-  }
-  .card {
-    width: 100%;
-    background-color: #fff; /* Fondo blanco para las tarjetas */
-    border: 1px solid rgba(0, 0, 0, 0.125); /* Borde sutil */
-    border-radius: 8px; /* Esquinas redondeadas */
-    overflow: hidden; /* Evitar bordes redondeados de la imagen se vean fuera de la tarjeta */
-  }
-  
-  .card-footer {
-    margin-top: auto; /* Empujar el pie de tarjeta hacia abajo */
-  }
-  
-  div.cardpuntero:hover {
-    background-color: #e3f2fd; /* Color de fondo cuando se pasa el ratón por encima */
-  }
-  
-  div.cardpuntero {
-    background-color: #fff; /* Fondo blanco para la interacción */
-    border-radius: 8px; /* Esquinas redondeadas */
-    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
-  }
-  
-  .imagen-de-prueba {
-    width: 100%;
-    height: 50%;
-    object-fit: cover; /* Ajustar la imagen manteniendo las proporciones y recortándola */
-    cursor: pointer; /* Cambia el cursor al pasar el ratón */
-  }
-  
-  .card-title {
-    margin-bottom: 0.5rem;
-    background-color: rgb(187, 192, 198);
-    cursor: pointer; /* Cambia el cursor al pasar el ratón */
-    text-decoration: underline; /* Subraya el texto */
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr ; /* Modificado para mostrar tres columnas */
+  gap: 1%;
+  padding: 2%;
+  background-color: #c9cdd198;
+}
+.card {
+  min-height: 400px; /* Ajusta la altura según tus necesidades */
+  width: 100%;
+  background-color: #ff0000de; /* Fondo blanco para las tarjetas */
+  border: 1px solid rgba(0, 0, 0, 0.125); /* Borde sutil */
+  border-radius: 8px; /* Esquinas redondeadas */
+  overflow: hidden; /* Evitar bordes redondeados de la imagen se vean fuera de la tarjeta */
+}
 
-  .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+.card-title {
+  margin-bottom: 0.5rem;
+  background-color: rgb(187, 192, 198);
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+  text-decoration: underline; /* Subraya el texto */
+}
+.card-body {
+/*     display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+  max-height: 100%; /* Controla la altura máxima del contenido de la tarjeta */
+  overflow: auto; /* Agrega una barra de desplazamiento si el contenido es demasiado largo */
+  background-color: rgba(0, 4, 255, 0.871); /* Fondo blanco para las tarjetas */
+}
+
+.card-footer {
+  margin-top: auto; /* Empujar el pie de tarjeta hacia abajo */
+}
+
+div.cardpuntero:hover {
+  background-color: #e3f2fd; /* Color de fondo cuando se pasa el ratón por encima */
+}
+
+div.cardpuntero {
+  background-color: #fff; /* Fondo blanco para la interacción */
+  border-radius: 8px; /* Esquinas redondeadas */
+  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.imagen-de-prueba {
+  max-height: 100%; 
+  max-width: 100%;
   
+/*     width: 100%; */
+  height: 50%;
+  object-fit: fill; /* Ajustar la imagen manteniendo las proporciones y recortándola */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+
+.div_Grafica{
+
+  background-color: rgb(17, 255, 0);
+}
+
+.calificacionesusuario .row,
+.calificacionesadmin .row {
+  flex-direction: column;
+}
+
+.col-md-3,
+.col-md-2 {
+  flex: 0 0 auto;
+}
+
+.calificaciones h4 {
+  font-size: 1rem;
+}

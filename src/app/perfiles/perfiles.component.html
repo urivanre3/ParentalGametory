@@ -121,7 +121,7 @@
             </div>
 
             <div class="row" *ngIf="mostrarAgregar">
-              <h2>Agregar un nuevo perfil</h2>
+              <h2 class="mensaje titulo">Agregar un nuevo perfil</h2>
 
               <form (ngSubmit)="agregarPerfil()" #perfilForm="ngForm">
                 <table class="table">
@@ -233,7 +233,7 @@
          
             <div class="row" *ngIf="mostrarActualizar">
               
-              <h2>Actualizar perfil</h2>
+              <h2 class="mensaje titulo">Actualizar perfil</h2>
 
               <form (ngSubmit)="actualizarPerfil()" #perfilForm="ngForm">
                 <table class="table">
@@ -339,6 +339,11 @@
                 </button>
               </form>
             </div>
+
+            <div *ngIf="perfilSeleccionadoFeedback" class="mensaje seleccionado alert alert-success" role="alert">
+              Perfil Seleccionado Actual: {{perfilSeleccionado.NombreObjetivo}}
+            </div>
+            
 
             <!-- Div para Borrar Perfil -->
             <div class="row" *ngIf="mostrarBorrar">

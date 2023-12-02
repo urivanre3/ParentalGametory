@@ -15,11 +15,13 @@ export class PerfilesComponent implements OnInit {
   datosusuario: any = null;
   perfiles: any = null;
   perfilSeleccionado: any = null;
+  ultimoperfilseleccionado: any = null;
   default = true;
   mostrarAgregar = false; // Mostrar el div de Agregar Perfil por defecto
   mostrarActualizar = false;
   mostrarBorrar = false;
   perfilAActualizar: any = null;
+  perfilSeleccionadoFeedback: boolean = false;
 
   cualidades = [
     { id: 1, nombre: 'Humanidades y Emociones' },
@@ -39,11 +41,19 @@ export class PerfilesComponent implements OnInit {
     private el: ElementRef,
     private router: Router
   ) {
+
+
+
     this.userSubscription = this.api
       .isUserAuthenticated()
       .subscribe((authenticated: boolean) => {
         this.loggedIn = authenticated;
         if (authenticated) {
+   
+
+          this.perfilSeleccionado = null;
+          this.datosusuario = null;
+
           this.api.getUserData().subscribe((respuestausuario: any) => {
             this.datosusuario = respuestausuario; // Asigna los datos del usuario
 
@@ -55,7 +65,12 @@ export class PerfilesComponent implements OnInit {
             );
             console.log('Número de id: ' + this.datosusuario.UsuarioID);
 
+        /*     console.log('Ultimo perfil seleccionado: ' + this.datosusuario.UltimoPerfil); */
+
             this.nuevoPerfil.usid_perfil = this.datosusuario.UsuarioID;
+
+ 
+
             this.api
               .buscarPerfiles(this.datosusuario.UsuarioID)
               .subscribe((respuesta: any) => {
@@ -63,9 +78,12 @@ export class PerfilesComponent implements OnInit {
                   // profiles es la respuesta con los perfiles relacionados
                   this.perfiles = respuesta;
                   
+      
+            
+
 
                   for (const perfil of this.perfiles) {
-                    console.log('Perfiles id: ', perfil.PerfilObjetivoID);
+                   /*  console.log('Perfiles id: ', perfil.PerfilObjetivoID);
                     console.log(
                       'Perfiles NombreObjetivo: ',
                       perfil.NombreObjetivo
@@ -78,6 +96,23 @@ export class PerfilesComponent implements OnInit {
                       'Perfiles Genero del objetivo: ',
                       perfil.GeneroObjetivo
                     );
+                    
+ */
+
+                    this.api.buscarUltimoPerfil(this.datosusuario.UltimoPerfil)
+                    .subscribe((ultimoperfil: any) => {
+        
+                      
+                    console.log('respuesta Ultimo perfil seleccionado: ' + ultimoperfil[0].NombreObjetivo);
+                    console.log('respuesta Ultimo perfil seleccionado: ' + ultimoperfil[0].EdadObjetivo);
+        
+        
+                    this.perfilSeleccionado=ultimoperfil[0];
+                    this.seleccionarPerfil(this.perfilSeleccionado);
+               
+                  });
+
+                
                   }
                 } else {
                   console.log('Este usuario no tiene perfiles a vinculados:');
@@ -90,7 +125,16 @@ export class PerfilesComponent implements OnInit {
 
   // Agrega una función para manejar la selección de un perfil
   seleccionarPerfil(perfil: any) {
+
+    this.perfilSeleccionado = null;
+
+
     this.perfilSeleccionado = perfil;
+    this.perfilSeleccionadoFeedback = true;
+/* 
+    setTimeout(() => {
+      this.perfilSeleccionadoFeedback = false;
+    }, 3000); */
 
     console.log('Seleccionado id: ', this.perfilSeleccionado.PerfilObjetivoID);
     console.log(

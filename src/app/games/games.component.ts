@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ApiService, Videojuego } from '../api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable, Subscription, of } from 'rxjs';
 /* import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { ChartDataset } from 'chart.js'; */
 
@@ -30,7 +30,6 @@ export class GamesComponent implements OnInit {
   // Attributes
   /*  public readonly user: Observable<User | null> = EMPTY; */
   public readonly user: Observable<any | null> = EMPTY;
-  loggedIn: Observable<boolean> = new Observable<boolean>();
   key: string = 'session';
   idprueba!: number;
   userIduserId: any = null;
@@ -69,11 +68,23 @@ export class GamesComponent implements OnInit {
   juegoId: any;
   calificacionesAdmin: any[] = [];
   comentarios: any[] = [];
+
+  
+  private userSubscription: Subscription | undefined; // Para gestionar la suscripción
+  loggedIn = false; // Cambiado a un valor booleano
+  
   constructor(
     @Optional() /*private auth: Auth, */ private api: ApiService,
     private router: ActivatedRoute,
     private el: ElementRef
   ) {
+
+    this.userSubscription = this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
+      this.loggedIn = authenticated;
+ 
+    });
+
+
     console.log('Games CONSTRUCTOR ');
     this.loadingProduct = true;
 

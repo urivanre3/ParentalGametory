@@ -22,6 +22,16 @@ export class ApiService {
     });
   }
 
+
+  buscarUltimoPerfil(userId: string): Observable<any> {
+    // Realiza una solicitud al servidor para buscar perfiles relacionados al usuario
+    return this._http.get(`${this.apiUrl}/buscarUltimoPerfil/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`, // Agrega el token de autenticación si es necesario
+      },
+    });
+  }
+
   crearPerfiles(data: any): Observable<any> {
     return this._http.post(`${this.apiUrl}/crearPerfiles`, data);
   }
