@@ -6,7 +6,7 @@
 
 <main class="mt-30">
     <app-header *ngIf="isAdmin && showSidebar"></app-header>
-    <div class="container" [ngClass]="{'container': !isAdmin}"> 
+    <div class="container-fluid" [ngClass]="{'container': !isAdmin}"> 
        
         <router-outlet (activate)="onActivated($event)"></router-outlet>
     </div>

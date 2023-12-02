@@ -1,6 +1,7 @@
 .container-fluid{
 
-    background-color: rgb(121, 96, 126);
+
+    min-width: 90%;
 }
 
 .containr{

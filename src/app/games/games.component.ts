@@ -212,12 +212,10 @@ export class GamesComponent implements OnInit {
         this.divGrafica.nativeElement.appendChild(barContainer);
       });
 
-      // Llamada al nuevo método para obtener calificación admin
+
     } else {
       console.error('divGrafica o nativeElement no están definidos.');
     }
-
-
 
     
 
@@ -344,33 +342,27 @@ export class GamesComponent implements OnInit {
     const calificacionGlobal = this.calificacionesGlobales[0]; // Supongo que solo hay un objeto en calificacionesGlobales
 
     if (calificacionGlobal) {
-      return calificacionGlobal[cualidad.nombre] || 0;
+/*       console.log('Esto es lo que regresa la Cualidad.nombre:', calificacionGlobal[cualidad.nombre]);
+ */      return calificacionGlobal[cualidad.nombre] || 0;
     }
 
     return 0;
   }
 
-/*   obtenerValorCualidadAdmin(cualidad: any): number {
-    const calificacionGlobalAdmin = this.calificacionesAdmin[0]; // Supongo que solo hay un objeto en calificacionesGlobales
-
-    if (calificacionGlobalAdmin) {
-      console.log('if (calificacionGlobalAdmin = ', calificacionGlobalAdmin); // Imprime los valores en la consola
-      return calificacionGlobalAdmin[cualidad.nombre] || 0;
-    }
-
-    return 0;
-  
-  
-  }
- */
-
-// Dentro de tu componente
 valorAdmin: number = 0; // Variable para almacenar el valor aleatorio
 
   obtenerValorCualidadAdmin(cualidad: any): number {
-    // Devuelve un valor aleatorio entre 0 y 100 y almacénalo en una variable
-    this.valorAdmin = Math.floor(Math.random() * 101);
-    return this.valorAdmin;
+/*     console.log('obtenerValorCualidadAdmin aqui');
+ */
+    const calificacionadministradores = this.calificacionesAdmin;
+
+    if (calificacionadministradores) {
+/*       console.log('Esto regresa Admin la Cualidad.nombre:', calificacionadministradores[cualidad.nombre]);
+ */
+      return calificacionadministradores[cualidad.nombre] || 0;
+    }
+
+    return 0;
   }
 
   nuevoComentario: string = '';

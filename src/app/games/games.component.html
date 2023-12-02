@@ -83,29 +83,40 @@
             </div>
 
             <div class="calificacionesadmin col-md-5">
-              <div>
+           
                 <h4>Valoración Administradores</h4>
-                <div *ngFor="let cualidad of cualidades" class="d-flex mb-3 align-items-center">
+                <div
+                  *ngFor="let cualidad of cualidades"
+                  class="d-flex mb-3 align-items-center"
+                >
                   <div class="col-md-3 me-3">{{ cualidad.nombre }}</div>
-                  <div class="col-md-2 me-3">{{ obtenerValorCualidadAdmin(cualidad) }}%</div>
+                  <div class="col-md-2 me-3">
+                    {{ obtenerValorCualidadAdmin(cualidad) }}%
+                  </div>
                   <div class="progress flex-grow-1" style="height: 25px">
                     <div
                       class="progress-bar text-dark"
-                      [class.bg-success]="valorAdmin >= 75"
-                      [class.bg-info]="valorAdmin >= 50 && valorAdmin < 75"
-                      [class.bg-warning]="valorAdmin >= 25 && valorAdmin < 50"
-                      [class.bg-danger]="valorAdmin < 25"
+                      [class.bg-success]="obtenerValorCualidadAdmin(cualidad) >= 75"
+                      [class.bg-info]="
+                        obtenerValorCualidadAdmin(cualidad) >= 50 &&
+                        obtenerValorCualidadAdmin(cualidad) < 75
+                      "
+                      [class.bg-warning]="
+                        obtenerValorCualidadAdmin(cualidad) >= 25 &&
+                        obtenerValorCualidadAdmin(cualidad) < 50
+                      "
+                      [class.bg-danger]="obtenerValorCualidadAdmin(cualidad) < 25"
                       role="progressbar"
-                      [style.width.%]="valorAdmin"
-                      [attr.aria-valuenow]="valorAdmin"
+                      [style.width.%]="obtenerValorCualidadAdmin(cualidad)"
+                      [attr.aria-valuenow]="obtenerValorCualidadAdmin(cualidad)"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      {{ valorAdmin }}%
+                      {{ obtenerValorCualidadAdmin(cualidad) }}%
                     </div>
                   </div>
                 </div>
-              </div>
+        
             </div>
           </div>
         </div>
