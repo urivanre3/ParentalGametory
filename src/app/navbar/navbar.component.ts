@@ -23,6 +23,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   loggedIn = false; // Cambiado a un valor booleano
   userData: any = null;
 
+  loginError: string | null = null;
+
   constructor(private api: ApiService, private router: Router) {
     this.form = new FormGroup({
       'email': new FormControl('', Validators.required),
@@ -30,8 +32,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
 
     this.userSubscription = this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
-      this.loggedIn = authenticated;
+    
       if (authenticated) {
+          this.loggedIn = authenticated;
         this.api.getUserData().subscribe((userData: any) => {
           this.userData = userData; // Asigna los datos del usuario
         });
@@ -63,19 +66,40 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.aux.email = this.form.value['email'];
     this.aux.password = this.form.value['password'];
 
-    this.api.iniciar_sesion(this.aux).subscribe((res: any) => {
-      localStorage.setItem('token', res.token);
+    this.api.iniciar_sesion(this.aux).subscribe(
+      (res: any) => {
+        if (res.token) {
+          localStorage.setItem('token', res.token);
 
-      // Después de iniciar sesión, actualiza el estado de autenticación y los datos del usuario
-      this.loggedIn = true;
-      this.api.getUserData().subscribe((userData: any) => {
-        this.userData = userData;
-      });
+          // Después de iniciar sesión, actualiza el estado de autenticación y los datos del usuario
+          this.api.getUserData().subscribe(
+            (userData: any) => {
+              this.loggedIn = true;
+              this.userData = userData;
+            },
+            (error) => {
+              console.error('Error al obtener datos del usuario:', error);
+            }
+          );
 
-      this.router.navigate(['/home']);
-      this.modal.hide();
-    });
+          this.router.navigate(['/home']);
+          this.modal.hide();
+        } else {
+          this.loginError = 'Error: Token no recibido en la respuesta del servidor.';
+          // Puedes manejar el error de otra manera si es necesario
+        }
+      },
+      (error) => {
+        if (error.status === 401) {
+          this.loginError = 'Correo electrónico o contraseña incorrectos.';
+        } else {
+          this.loginError = 'Error al iniciar sesión. Inténtelo de nuevo más tarde.';
+          // Puedes manejar otros códigos de error aquí
+        }
+      }
+    );
   }
+
 
   async logout() {
     this.api.logout().subscribe(() => {

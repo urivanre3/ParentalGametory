@@ -202,8 +202,13 @@
               >
                 Entrar
               </button>
+         
+            </div>
+            <div *ngIf="loginError" class="alert alert-danger">
+              {{ loginError }}
             </div>
           </div>
+
         </form>
         <div class="singin-option pt-40">
           <p class="text-sm text-medium text-dark text-center">

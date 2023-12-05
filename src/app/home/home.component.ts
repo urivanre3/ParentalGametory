@@ -190,9 +190,7 @@ export class HomeComponent implements OnInit {
   }
 
   inicializarDatos() {
-    this.userSubscription = this.api
-      .isUserAuthenticated()
-      .subscribe((authenticated: boolean) => {
+    this.userSubscription = this.api.isUserAuthenticated().subscribe((authenticated: boolean) => {
         this.loggedIn = authenticated;
         if (authenticated) {
           this.api.getUserData().subscribe((respuestausuario: any) => {
